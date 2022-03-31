@@ -7,6 +7,7 @@ const locationApi = {
 //array of popular cocktails for search autocomplete
 var atuoCocktails = ['Martini', 'Old Fashioned', 'Margarita', 'Cosmopolitan', 'Negroni', 'Moscow Mule', 'Martini', 'Mojito', 'Whiskey Sour', 'French 75', 
     'Manhattan', 'Spritz', 'Gimlet', 'Sazerac' ,"Pimm's Cup", 'Vesper', 'Mimosa', 'Tom Collins', 'Daiquiri', 'Dark & Stormy', 'Martinez',];
+//drink recipe object to save favourites
 var drinkRecipe = {
     id: 0,
     name: "",
@@ -14,7 +15,8 @@ var drinkRecipe = {
     ingredients: [],
     steps: []
 } 
-var favouriteDrinks = [drinkRecipe];
+//TODO function that adds user's selected drink to favourites 
+var favouriteDrinks = [localStorageFavourites()];
 
 //for saving and retrieving localstorage data
 function localStorageFavourites(){
