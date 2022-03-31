@@ -6,7 +6,21 @@ const locationApi = {
 };
 //array of popular cocktails for search autocomplete
 var atuoCocktails = ['Martini', 'Old Fashioned', 'Margarita', 'Cosmopolitan', 'Negroni', 'Moscow Mule', 'Martini', 'Mojito', 'Whiskey Sour', 'French 75', 
-    'Manhattan', 'Spritz', 'Gimlet', 'Sazerac' ,"Pimm's Cup", 'Vesper', 'Mimosa', 'Tom Collins', 'Daiquiri', 'Dark & Stormy', 'Martinez',]
+    'Manhattan', 'Spritz', 'Gimlet', 'Sazerac' ,"Pimm's Cup", 'Vesper', 'Mimosa', 'Tom Collins', 'Daiquiri', 'Dark & Stormy', 'Martinez',];
+var drinkRecipe = {
+    id: 0,
+    name: "",
+    alcoholic: false,
+    ingredients: [],
+    steps: []
+} 
+var favouriteDrinks = [drinkRecipe];
+
+//for saving and retrieving localstorage data
+function localStorageFavourites(){
+    localStorage.setItem('FavouriteDrinks', JSON.stringify(favouriteDrinks));
+    return JSON.parse(localStorage.getItem('FavouriteDrinks'));
+}
 
 //where query is the search request and param is the parameters
 async function searchRequest(query, param){
@@ -34,5 +48,8 @@ async function locationRequest(location){
         return data;
 }
 
-console.log(searchRequest('vodka', 'search.php?i='));
+
+//logging for verfication that funcations work
+console.log(searchRequest('martini', 'search.php?s='));
 console.log(locationRequest('melbourne'));
+console.log(localStorageFavourites());
