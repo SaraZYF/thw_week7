@@ -33,10 +33,3 @@ async function locationRequest(location){
 
 console.log(searchRequest('gin', 'search.php?s='));
 console.log(locationRequest('melbourne'));
-
-searchRequest('gin', 'search.php?s=').then(
-    result => { 
-        let array = result;
-        console.log(array);
-    }
-)
