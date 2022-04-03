@@ -21,7 +21,6 @@ var featuredDrink = {}
 //TODO function that adds user's selected drink to favourites 
 var favouriteDrinks = [drinkRecipe];
 
-//
 const search = $('#search');
 
 //for saving and retrieving localstorage data
@@ -78,10 +77,14 @@ async function popularDrinks(){
     })
 }
 
+console.log(cocktailRequest('', 'random.php'));
+
 //on load funcations calls
+
 search.autocomplete({
     source: autoCocktails
 });
+
 
 featuredCocktail();
 
