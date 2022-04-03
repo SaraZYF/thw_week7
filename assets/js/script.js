@@ -16,8 +16,8 @@ var drinkRecipe = {
     ingredients: [],
     steps: []
 }
-var popularDrinks = [];
-var featuredDrink = {} 
+var popularDrink = [];
+var favouriteDrink = {} 
 //TODO function that adds user's selected drink to favourites 
 var favouriteDrinks = [drinkRecipe];
 
@@ -51,34 +51,67 @@ async function locationRequest(location){
 }
 
 //mapping data from a random drink to featured card
-async function featuredCocktail(){
-    await cocktailRequest('','random.php')
-    .then(result => {
-        featuredDrink.id = result.drinks[0].idDrink;
-        featuredDrink.name = result.drinks[0].strDrink;
-        featuredDrink.img = result.drinks[0].strDrinkThumb;
-    })
-    $('.featured_recipe').append(
-    `
-        <h2>${featuredDrink.name}<h2>
-        <img src='${featuredDrink.img}' alt='${featuredDrink.name}' width='200px' href="#${featuredDrink.id}"> 
-        <a href="#${featuredDrink.id}">Read More</a>  
-    `
-    )
+async function favouriteCocktail(){
+    var favData = localStorage.getItem('FavouriteDrinks');
+    if(favData == null){
+        console.log("none");
+        $('#favouriteATag').text("add a recipe")
+        $('#favourite').append(
+            `
+                <div class="item-col">
+                    <div class="item-content">
+                        <div class="fav-img">
+                            <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
+                        </div>
+                        <div class="item-content-text">
+                            <div class="">
+                                <h5></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+        )
+    }else{
+        $('#favouriteATag').text("view more")
+        await cocktailRequest('','random.php')
+        .then(result => {
+            favouriteDrink.id = result.drinks[0].idDrink;
+            favouriteDrink.name = result.drinks[0].strDrink;
+            favouriteDrink.img = result.drinks[0].strDrinkThumb;
+        })
+        $('#favourite').append(
+        `
+            <div class="item-col">
+                <div class="item-content">
+                    <div class="fav-img">
+                        <img class="pre-img" src="${favouriteDrink.img}" alt="${favouriteDrink.name}">
+                    </div>
+                    <div class="item-content-text">
+                        <div class="">
+                            <h5>${favouriteDrink.name}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+        )
+    }
 }
+
 
 async function popularDrinks(){
     //TODO update api key so this function works
     await cocktailRequest('', 'popular.php')
     .then(result => {
-        JSON.parse(result).forEach(element => {
-
-        })
+        console.log(result)
     })
+    
 }
 
 console.log(cocktailRequest('', 'random.php'));
-
 //on load funcations calls
 
 search.autocomplete({
@@ -86,7 +119,9 @@ search.autocomplete({
 });
 
 
-featuredCocktail();
+favouriteCocktail();
+popularDrinks();
+
 
 //eventlisteners
 window.addEventListener('keypress', (e) => {
