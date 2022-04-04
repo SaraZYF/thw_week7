@@ -62,6 +62,7 @@ async function cocktailRequest(query, param){
         return data;
 }
 
+
 //location is the desired location of weather
 async function locationRequest(location){
     let data;
@@ -124,10 +125,11 @@ async function favouriteCocktail(){
 
 //mapping popular drinks to the home page, the index is the number of items you want returned
 async function popularDrinks(index){
+    $('#popular').html('');
     await cocktailRequest('', 'popular.php')
     .then(result => {
+        console.log(result)
         var popData = result.drinks;
-        console.log(popData[0]);
         for(let i = 0; i < index; i++){
             $('#popular').append(
                 `
@@ -157,14 +159,20 @@ async function popularDrinks(index){
 search.autocomplete({
     source: autoCocktails
 });
+
+window.onload = () => {
 // currently saving the favourite drinks object into localstorage, just for display purposes
 localStorageFavourites();
 //loading objects into the favourites section
 favouriteCocktail();
 //loading objects into the popular section
 popularDrinks(4);
+}
 
 
+$('#popularView').click(() =>{
+    popularDrinks(8);
+})
 //eventlisteners
 
 //globally listening for an enter keypress and loading search results into console
