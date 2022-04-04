@@ -73,6 +73,35 @@ async function locationRequest(location){
         return data;
 }
 
+function redirect(location){
+    window.location.href = location;
+}
+
+async function productPageLoad(){
+    favouriteCocktail();
+    let id = window.location.search;
+    let drink;
+    let Ingredient;
+    id = id.split('=')[1];
+    await cocktailRequest(id, 'lookup.php?i=')
+    .then(result => drink = result.drinks[0])
+    await cocktailRequest(drink.strIngredient1, 'search.php?i=')
+    .then( result => Ingredient = result.ingredients[0]);
+
+    console.log(drink)
+    var alpha = Ingredient.strDescription.toString()
+    var beta = alpha.substring(0, 300);
+
+    $('#productTitle').text(drink.strDrink);
+    $('#ingredientTitle').text(`Based Ingrediant: ${Ingredient.strIngredient}`);
+    $('#ingredientDesc').text(`${beta}...`);
+    $('.product-img').attr('src', drink.strDrinkThumb);
+}
+
+async function productPageRequest(id){
+    redirect(`product.html?id=${id}`)
+}
+
 //mapping data from a random drink to featured card
 async function favouriteCocktail(){
     var favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
@@ -99,12 +128,13 @@ async function favouriteCocktail(){
             `
         )
     }else{
+        $('#favourite').html('');
         $('#favouriteATag').text("view more")
         //decide whether we display only 4 objects or as many as the users adds
         favData.forEach(element => {
             $('#favourite').append(
                 `
-                    <div class="item-col">
+                    <div class="item-col" onclick='productPageRequest(${element.id})'>
                         <div class="item-content">
                             <div class="fav-img">
                                 <img class="pre-img" src="${element.img}" alt="${element.name}">
@@ -133,7 +163,7 @@ async function popularDrinks(index){
         for(let i = 0; i < index; i++){
             $('#popular').append(
                 `
-                <div class="item-col">
+                <div class="item-col" onclick='productPageRequest(${popData[i].idDrink})'>
                     <div class="item-content">
                         <div class="pop-img">
                             <img class="pre-img" src="${popData[i].strDrinkThumb}" alt="">
@@ -160,7 +190,7 @@ search.autocomplete({
     source: autoCocktails
 });
 
-window.onload = () => {
+function homePageLoad() {
 // currently saving the favourite drinks object into localstorage, just for display purposes
 localStorageFavourites();
 //loading objects into the favourites section

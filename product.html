@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
 
-<body>
+<body onload="productPageLoad()">
   <header class="header-section">
       <div class="container">
         <h1 class="logo">shaken<span>&</span>stirred</h1>
@@ -55,9 +55,9 @@
   <div class="container">
     <div class="row gap-5">
       <div class="product-text">
-        <h3>Frozen Watermelon Margarita</h3>
-        <div class="product-name">Based Ingrediant: GIN</div>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt praesentium voluptas sed, debitis, deleniti dignissimos odio molestiae nihil expedita, quam suscipit facilis inventore. Animi nulla consequatur veritatis mollitia quod unde.</p>
+        <h3 id="productTitle">Frozen Watermelon Margarita</h3>
+        <div id="ingredientTitle" class="product-name">Based Ingrediant: GIN</div>
+        <p id="ingredientDesc">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt praesentium voluptas sed, debitis, deleniti dignissimos odio molestiae nihil expedita, quam suscipit facilis inventore. Animi nulla consequatur veritatis mollitia quod unde.</p>
          </div>
         <div class="product-image-col">
           <img class="product-img" src="./assets/img/header-bg.jpg" alt="">
@@ -95,7 +95,7 @@
             <a href="#">View More</a>
       </div>
       <div class="col-100">
-        <div class="row">
+        <div class="row" id="favourite">
           <div class="item-col">
               <div class="item-content">
                 <div class="fav-img">
