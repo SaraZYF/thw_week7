@@ -1,5 +1,5 @@
 //assigning global variables 
-const cocktailApi = 'https://www.thecocktaildb.com/api/json/v1/1/';
+const cocktailApi = 'https://www.thecocktaildb.com/api/json/v2/9973533/';
 const locationApi = {
     key: 'f40fdbed4ce6f49a21c55972b85d4f67',
     uri: 'https://api.openweathermap.org/data/2.5/'
@@ -12,20 +12,42 @@ var drinkRecipe = {
     id: 0,
     name: "",
     img: "",
-    alcoholic: false,
-    ingredients: [],
-    steps: []
 }
-var popularDrink = [];
-var favouriteDrink = {} 
+
+//favourite drinks is an array of objects
+//TODO add function that add's and removes objects on user input
+var favouriteDrink = 
+[
+    {
+        id: 11007,
+        name: "Margarita",
+        img: "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+    },
+    {
+        id: 11118,
+        name: "Blue Margarita",
+        img: "https://www.thecocktaildb.com/images/media/drink/bry4qh1582751040.jpg"
+    },
+    {
+        id: 13196,
+        name: "Long vodka",
+        img: "https://www.thecocktaildb.com/images/media/drink/9179i01503565212.jpg"
+    },
+    {
+        id: 16967,
+        name: "Vodka Fizz",
+        img: "https://www.thecocktaildb.com/images/media/drink/xwxyux1441254243.jpg"
+    },
+]
+
 //TODO function that adds user's selected drink to favourites 
-var favouriteDrinks = [drinkRecipe];
+var favouriteDrinks = [];
 
 const search = $('#search');
 
 //for saving and retrieving localstorage data
 function localStorageFavourites(){
-    localStorage.setItem('FavouriteDrinks', JSON.stringify(favouriteDrinks));
+    localStorage.setItem('FavouriteDrinks', JSON.stringify(favouriteDrink));
     return JSON.parse(localStorage.getItem('FavouriteDrinks'));
 }
 
@@ -52,10 +74,12 @@ async function locationRequest(location){
 
 //mapping data from a random drink to featured card
 async function favouriteCocktail(){
-    var favData = localStorage.getItem('FavouriteDrinks');
+    var favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
+    console.log(JSON.parse(localStorage.getItem('FavouriteDrinks')));
     if(favData == null){
         console.log("none");
         $('#favouriteATag').text("add a recipe")
+        //TODO change the placeholder image to a plus image
         $('#favourite').append(
             `
                 <div class="item-col">
@@ -75,55 +99,75 @@ async function favouriteCocktail(){
         )
     }else{
         $('#favouriteATag').text("view more")
-        await cocktailRequest('','random.php')
-        .then(result => {
-            favouriteDrink.id = result.drinks[0].idDrink;
-            favouriteDrink.name = result.drinks[0].strDrink;
-            favouriteDrink.img = result.drinks[0].strDrinkThumb;
-        })
-        $('#favourite').append(
-        `
-            <div class="item-col">
-                <div class="item-content">
-                    <div class="fav-img">
-                        <img class="pre-img" src="${favouriteDrink.img}" alt="${favouriteDrink.name}">
+        //decide whether we display only 4 objects or as many as the users adds
+        favData.forEach(element => {
+            $('#favourite').append(
+                `
+                    <div class="item-col">
+                        <div class="item-content">
+                            <div class="fav-img">
+                                <img class="pre-img" src="${element.img}" alt="${element.name}">
+                            </div>
+                            <div class="item-content-text">
+                                <div class="">
+                                    <h5>${element.name}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="item-content-text">
-                        <div class="">
-                            <h5>${favouriteDrink.name}</h5>
+                `
+                )
+        })
+    }
+}
+
+//mapping popular drinks to the home page, the index is the number of items you want returned
+async function popularDrinks(index){
+    await cocktailRequest('', 'popular.php')
+    .then(result => {
+        var popData = result.drinks;
+        console.log(popData[0]);
+        for(let i = 0; i < index; i++){
+            $('#popular').append(
+                `
+                <div class="item-col">
+                    <div class="item-content">
+                        <div class="pop-img">
+                            <img class="pre-img" src="${popData[i].strDrinkThumb}" alt="">
+                        </div>
+                        <div class="item-content-text">
+                            <div class="">
+                                <h5>${popData[i].strDrink}</h5>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `
-        )
-    }
-}
-
-
-async function popularDrinks(){
-    //TODO update api key so this function works
-    await cocktailRequest('', 'popular.php')
-    .then(result => {
-        console.log(result)
+                `
+            )        
+        }
+        
     })
     
 }
 
-console.log(cocktailRequest('', 'random.php'));
 //on load funcations calls
 
+//search autocomplete, which is working. however, there is a css object the is blocking the display.
 search.autocomplete({
     source: autoCocktails
 });
-
-
+// currently saving the favourite drinks object into localstorage, just for display purposes
+localStorageFavourites();
+//loading objects into the favourites section
 favouriteCocktail();
-popularDrinks();
+//loading objects into the popular section
+popularDrinks(4);
 
 
 //eventlisteners
+
+//globally listening for an enter keypress and loading search results into console
 window.addEventListener('keypress', (e) => {
     if(e.key == "Enter"){
         cocktailRequest(search.val(), 'search.php?s=')
