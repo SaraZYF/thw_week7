@@ -88,7 +88,6 @@ async function productPageLoad(){
     await cocktailRequest(drink.strIngredient1, 'search.php?i=')
     .then( result => Ingredient = result.ingredients[0]);
 
-    console.log(drink)
     var alpha = Ingredient.strDescription.toString()
     var beta = alpha.substring(0, 300);
 
@@ -190,7 +189,7 @@ async function popularDrinks(index){
                         <div class="item-content-text">
                             <div class="">
                                 <h5>${popData[i].strDrink}</h5>
-                                <button onclick='addFav('s')'>add to Favourites</button>
+                                <button onClick="addFav(${popData[i].idDrink}, ${})">add to Favourites</button>
                             </div>
                         </div>
                     </div>
