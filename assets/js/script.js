@@ -102,6 +102,24 @@ async function productPageRequest(id){
     redirect(`product.html?id=${id}`)
 }
 
+function removeFav(index){
+    let favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
+    let newFavData = [];
+    favData.forEach(element =>{
+        if(element.id != index){
+            newFavData.push(element);
+        }
+    })
+    localStorage.setItem('FavouriteDrinks', JSON.stringify(newFavData));
+}
+
+function addFav(id,name,img){
+    console.log(id + '\n' + name + '\n' + img);
+    let favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
+    //favData.push([id,name,img]);
+    localStorage.setItem('FavouriteDrinks', JSON.stringify(favData));
+}
+
 //mapping data from a random drink to featured card
 async function favouriteCocktail(){
     var favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
@@ -134,14 +152,15 @@ async function favouriteCocktail(){
         favData.forEach(element => {
             $('#favourite').append(
                 `
-                    <div class="item-col" onclick='productPageRequest(${element.id})'>
+                    <div class="item-col">
                         <div class="item-content">
-                            <div class="fav-img">
+                            <div class="fav-img" onclick='productPageRequest(${element.id})'>
                                 <img class="pre-img" src="${element.img}" alt="${element.name}">
                             </div>
                             <div class="item-content-text">
                                 <div class="">
                                     <h5>${element.name}</h5>
+                                    <button onclick='removeFav(${element.id})'>remove</button>
                                     </div>
                                 </div>
                             </div>
@@ -163,14 +182,15 @@ async function popularDrinks(index){
         for(let i = 0; i < index; i++){
             $('#popular').append(
                 `
-                <div class="item-col" onclick='productPageRequest(${popData[i].idDrink})'>
+                <div class="item-col" >
                     <div class="item-content">
-                        <div class="pop-img">
+                        <div class="pop-img" onclick='productPageRequest(${popData[i].idDrink})'>
                             <img class="pre-img" src="${popData[i].strDrinkThumb}" alt="">
                         </div>
                         <div class="item-content-text">
                             <div class="">
                                 <h5>${popData[i].strDrink}</h5>
+                                <button onclick='addFav('s')'>add to Favourites</button>
                             </div>
                         </div>
                     </div>
@@ -203,6 +223,7 @@ popularDrinks(4);
 $('#popularView').click(() =>{
     popularDrinks(8);
 })
+
 //eventlisteners
 
 //globally listening for an enter keypress and loading search results into console
