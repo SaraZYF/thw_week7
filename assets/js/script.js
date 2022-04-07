@@ -1,4 +1,4 @@
-console.log('test')
+
 //assigning global variables 
 const cocktailApi = 'https://www.thecocktaildb.com/api/json/v2/9973533/';
 const locationApi = {
@@ -200,8 +200,9 @@ async function popularDrinks(index){
 search.autocomplete({
     source: autoCocktails
 });
-
+console.log('1')
 function homePageLoad() {
+    console.log('1')
 // currently saving the favourite drinks object into localstorage, just for display purposes
 localStorageFavourites();
 //loading objects into the favourites section
