@@ -1,3 +1,4 @@
+console.log('test')
 //assigning global variables 
 const cocktailApi = 'https://www.thecocktaildb.com/api/json/v2/9973533/';
 const locationApi = {
