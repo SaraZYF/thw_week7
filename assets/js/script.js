@@ -24,6 +24,26 @@ var favouriteDrink =
 //TODO function that adds user's selected drink to favourites 
 var favouriteDrinks = [];
 
+const cocktailCard = (id, name, img) =>{
+    return(
+        `
+        <div class="item-col" >
+            <div class="item-content">
+                <div class="pop-img" onclick='productPageRequest(${id})'>
+                    <img class="pre-img" src="${img}" alt="">
+                </div>
+                <div class="item-content-text">
+                    <div class="">
+                        <h5>${name}</h5>
+                        <button onclick="addFav('${id}', '${name}', '${img}')">add to Favourites</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `
+    )
+}
+
 const search = $('#search');
 
 //for saving and retrieving localstorage data
@@ -166,23 +186,7 @@ async function popularDrinks(index){
         console.log(result)
         var popData = result.drinks;
         for(let i = 0; i < index; i++){
-            $('#popular').append(
-                `
-                <div class="item-col" >
-                    <div class="item-content">
-                        <div class="pop-img" onclick='productPageRequest(${popData[i].idDrink})'>
-                            <img class="pre-img" src="${popData[i].strDrinkThumb}" alt="">
-                        </div>
-                        <div class="item-content-text">
-                            <div class="">
-                                <h5>${popData[i].strDrink}</h5>
-                                <button onclick="addFav('${popData[i].idDrink}', '${popData[i].strDrink}', '${popData[i].strDrinkThumb}')">add to Favourites</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                `
-            )        
+            $('#popular').append(cocktailCard(popData[i].idDrink , popData[i].strDrink, popData[i].strDrinkThumb))        
         }
         
     })
@@ -217,12 +221,7 @@ $('#popularView').click(() =>{
 //globally listening for an enter keypress and loading search results into console
 window.addEventListener('keypress', (e) => {
     if(e.key == "Enter"){
-        cocktailRequest(search.val(), 'search.php?s=')
-        .then(result => {
-            result.drinks.forEach(element => {
-                console.log(element);
-            })
-        })
+        window.location.href = `/recipes.html?search=${e.target.value}`;
     }
 })
 
@@ -234,23 +233,7 @@ async function browseDrinks (index) {
         console.log(result)
         var browseData = result.drinks;
         for (let i=0; i < index; i++){
-    
-    $('#browse').append(
-        `
-            <div class="item-col">
-                <div class="item-content">
-                    <div class="browse-img" onclick='productPageRequest(${browseData[i].idDrink})'>
-                        <img class="pre-img" src="${browseData[i].strDrinkThumb}" alt="">
-                    </div>
-                    <div class="item-content-text">
-                        <div class="">
-                        <h5>${browseData[i].strDrink}</h5>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        `
-    )
+    $('#browse').append( cocktailCard(browseData[i].idDrink , browseData[i].strDrink, browseData[i].strDrinkThumb))
     }
 })
 }
@@ -278,22 +261,7 @@ async function browseGin (index) {
         console.log(ginData);
         for (let i=0; i < index; i++){
     
-    $('#browse').append(
-        `
-        <div class="item-col">
-            <div class="item-content">
-                <div class="browse-img" onclick='productPageRequest(${browseData[i].idDrink})'>
-                    <img class="pre-img" src="${ginData[i].strDrinkThumb}" alt="">
-                </div>
-                <div class="item-content-text">
-                    <div class="">
-                        <h5>${ginData[i].strDrink}</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        `
-    )
+    $('#browse').append( cocktailCard(browseData[i].idDrink , ginData[i].strDrink, ginData[i].strDrinkThumb))
     }
 })
 }
