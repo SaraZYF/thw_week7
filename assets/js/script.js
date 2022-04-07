@@ -18,26 +18,7 @@ var drinkRecipe = {
 //TODO add function that add's and removes objects on user input
 var favouriteDrink = 
 [
-    {
-        id: 11007,
-        name: "Margarita",
-        img: "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
-    },
-    {
-        id: 11118,
-        name: "Blue Margarita",
-        img: "https://www.thecocktaildb.com/images/media/drink/bry4qh1582751040.jpg"
-    },
-    {
-        id: 13196,
-        name: "Long vodka",
-        img: "https://www.thecocktaildb.com/images/media/drink/9179i01503565212.jpg"
-    },
-    {
-        id: 16967,
-        name: "Vodka Fizz",
-        img: "https://www.thecocktaildb.com/images/media/drink/xwxyux1441254243.jpg"
-    },
+
 ]
 
 //TODO function that adds user's selected drink to favourites 
@@ -47,7 +28,7 @@ const search = $('#search');
 
 //for saving and retrieving localstorage data
 function localStorageFavourites(){
-    localStorage.setItem('FavouriteDrinks', JSON.stringify(favouriteDrink));
+    //localStorage.setItem('FavouriteDrinks', JSON.stringify(favouriteDrink));
     return JSON.parse(localStorage.getItem('FavouriteDrinks'));
 }
 
@@ -71,6 +52,58 @@ async function locationRequest(location){
         //TODO add error conditions
         .catch(err => console.log(err))
         return data;
+}
+
+function redirect(location){
+    window.location.href = location;
+}
+
+async function productPageLoad(){
+    favouriteCocktail();
+    let id = window.location.search;
+    let drink;
+    let Ingredient;
+    id = id.split('=')[1];
+    await cocktailRequest(id, 'lookup.php?i=')
+    .then(result => drink = result.drinks[0])
+    await cocktailRequest(drink.strIngredient1, 'search.php?i=')
+    .then( result => Ingredient = result.ingredients[0]);
+
+    console.log(drink)
+    var alpha = Ingredient.strDescription.toString()
+    var beta = alpha.substring(0, 300);
+
+    $('#productTitle').text(drink.strDrink);
+    $('#ingredientTitle').text(`Based Ingrediant: ${Ingredient.strIngredient}`);
+    $('#ingredientDesc').text(`${beta}...`);
+    $('.product-img').attr('src', drink.strDrinkThumb);
+}
+
+async function productPageRequest(id){
+    redirect(`product.html?id=${id}`)
+}
+
+function removeFav(index){
+    let favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
+    let newFavData = [];
+    favData.forEach(element =>{
+        if(element.id != index){
+            newFavData.push(element);
+        }
+    })
+    localStorage.setItem('FavouriteDrinks', JSON.stringify(newFavData));
+}
+
+function addFav(id,name,img){
+    console.log(id + '\n' + name + '\n' + img);
+    let favData =[];
+    if(JSON.parse(localStorage.getItem('FavouriteDrinks')) == null){
+        favData = [{id: id, name: name,img: img}]
+    }else{
+        favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
+        favData.push({id: id, name: name,img: img});
+    }
+    localStorage.setItem('FavouriteDrinks', JSON.stringify(favData));
 }
 
 //mapping data from a random drink to featured card
@@ -99,6 +132,7 @@ async function favouriteCocktail(){
             `
         )
     }else{
+        $('#favourite').html('');
         $('#favouriteATag').text("view more")
         //decide whether we display only 4 objects or as many as the users adds
         favData.forEach(element => {
@@ -106,12 +140,13 @@ async function favouriteCocktail(){
                 `
                     <div class="item-col">
                         <div class="item-content">
-                            <div class="fav-img">
+                            <div class="fav-img" onclick='productPageRequest(${element.id})'>
                                 <img class="pre-img" src="${element.img}" alt="${element.name}">
                             </div>
                             <div class="item-content-text">
                                 <div class="">
                                     <h5>${element.name}</h5>
+                                    <button onclick='removeFav(${element.id})'>remove</button>
                                     </div>
                                 </div>
                             </div>
@@ -133,14 +168,15 @@ async function popularDrinks(index){
         for(let i = 0; i < index; i++){
             $('#popular').append(
                 `
-                <div class="item-col">
+                <div class="item-col" >
                     <div class="item-content">
-                        <div class="pop-img">
+                        <div class="pop-img" onclick='productPageRequest(${popData[i].idDrink})'>
                             <img class="pre-img" src="${popData[i].strDrinkThumb}" alt="">
                         </div>
                         <div class="item-content-text">
                             <div class="">
                                 <h5>${popData[i].strDrink}</h5>
+                                <button onclick="addFav('${popData[i].idDrink}', '${popData[i].strDrink}', '${popData[i].strDrinkThumb}')">add to Favourites</button>
                             </div>
                         </div>
                     </div>
@@ -160,7 +196,7 @@ search.autocomplete({
     source: autoCocktails
 });
 
-window.onload = () => {
+function homePageLoad() {
 // currently saving the favourite drinks object into localstorage, just for display purposes
 localStorageFavourites();
 //loading objects into the favourites section
@@ -168,7 +204,6 @@ favouriteCocktail();
 //loading objects into the popular section
 popularDrinks(4);
 
-//loading objects into the browse section
 browseDrinks(8);
 }
 
@@ -176,6 +211,7 @@ browseDrinks(8);
 $('#popularView').click(() =>{
     popularDrinks(8);
 })
+
 //eventlisteners
 
 //globally listening for an enter keypress and loading search results into console
@@ -188,10 +224,7 @@ window.addEventListener('keypress', (e) => {
             })
         })
     }
-}) 
-
-
-//browse section, reuse cocktailRequest function
+})
 
 //  append detail for browse card, limit to 8 blocks
 async function browseDrinks (index) {
@@ -204,19 +237,19 @@ async function browseDrinks (index) {
     
     $('#browse').append(
         `
-    <div class="item-col">
+            <div class="item-col">
                 <div class="item-content">
-                <div class="browse-img">
-                    <img class="pre-img" src="${browseData[i].strDrinkThumb}" alt="">
-                  </div>
-                  <div class="item-content-text">
-                    <div class="">
-                      <h5>${browseData[i].strDrink}</h5>
+                    <div class="browse-img" onclick='productPageRequest(${browseData[i].idDrink})'>
+                        <img class="pre-img" src="${browseData[i].strDrinkThumb}" alt="">
+                    </div>
+                    <div class="item-content-text">
+                        <div class="">
+                        <h5>${browseData[i].strDrink}</h5>
                     </div>
                   </div>
                 </div>
-              </div>
-              `
+            </div>
+        `
     )
     }
 })
@@ -247,19 +280,19 @@ async function browseGin (index) {
     
     $('#browse').append(
         `
-    <div class="item-col">
-                <div class="item-content">
-                <div class="browse-img">
+        <div class="item-col">
+            <div class="item-content">
+                <div class="browse-img" onclick='productPageRequest(${browseData[i].idDrink})'>
                     <img class="pre-img" src="${ginData[i].strDrinkThumb}" alt="">
-                  </div>
-                  <div class="item-content-text">
-                    <div class="">
-                      <h5>${ginData[i].strDrink}</h5>
-                    </div>
-                  </div>
                 </div>
-              </div>
-              `
+                <div class="item-content-text">
+                    <div class="">
+                        <h5>${ginData[i].strDrink}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `
     )
     }
 })
@@ -273,5 +306,3 @@ $('#browseGin').click(() => {
 })
 
 // TODO go to pdp page on button click
-
-
