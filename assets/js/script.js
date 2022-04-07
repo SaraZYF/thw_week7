@@ -167,6 +167,9 @@ localStorageFavourites();
 favouriteCocktail();
 //loading objects into the popular section
 popularDrinks(4);
+
+//loading objects into the browse section
+browseDrinks(8);
 }
 
 
@@ -185,4 +188,90 @@ window.addEventListener('keypress', (e) => {
             })
         })
     }
+}) 
+
+
+//browse section, reuse cocktailRequest function
+
+//  append detail for browse card, limit to 8 blocks
+async function browseDrinks (index) {
+    $('#browse').html('');
+    await cocktailRequest('','search.php?f=a')
+    .then (result => {
+        console.log(result)
+        var browseData = result.drinks;
+        for (let i=0; i < index; i++){
+    
+    $('#browse').append(
+        `
+    <div class="item-col">
+                <div class="item-content">
+                <div class="browse-img">
+                    <img class="pre-img" src="${browseData[i].strDrinkThumb}" alt="">
+                  </div>
+                  <div class="item-content-text">
+                    <div class="">
+                      <h5>${browseData[i].strDrink}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              `
+    )
+    }
 })
+}
+
+// //click ALL load objects to browse section
+// $('#browseAll').click(() => {
+//    browseDrinks(8);
+// })
+
+
+// append detail for GIN on browse card, limit to 8
+async function browseGin (index) {
+    $('#browse').html('');
+    await cocktailRequest('','search.php?f=a')
+    .then (result => {
+        console.log(result)
+        var browseData = result.drinks;
+        var ginData = browseData.filter((drink) => {
+            for (keys in drink){
+                if(drink[keys] === "Gin"){
+                    return drink;
+                }
+            }
+        });
+        console.log(ginData);
+        for (let i=0; i < index; i++){
+    
+    $('#browse').append(
+        `
+    <div class="item-col">
+                <div class="item-content">
+                <div class="browse-img">
+                    <img class="pre-img" src="${ginData[i].strDrinkThumb}" alt="">
+                  </div>
+                  <div class="item-content-text">
+                    <div class="">
+                      <h5>${ginData[i].strDrink}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              `
+    )
+    }
+})
+}
+
+
+
+// click ALL load objects to browse section
+$('#browseGin').click(() => {
+   browseGin(8);
+})
+
+// TODO go to pdp page on button click
+
+
