@@ -1,12 +1,12 @@
 
-//assigning global variables 
+//assigning global variables
 const cocktailApi = 'https://www.thecocktaildb.com/api/json/v2/9973533/';
 const locationApi = {
     key: 'f40fdbed4ce6f49a21c55972b85d4f67',
     uri: 'https://api.openweathermap.org/data/2.5/'
 };
 //array of popular cocktails for search autocomplete
-var autoCocktails = ['Martini', 'Old Fashioned', 'Margarita', 'Cosmopolitan', 'Negroni', 'Moscow Mule', 'Martini', 'Mojito', 'Whiskey Sour', 'French 75', 
+var autoCocktails = ['Martini', 'Old Fashioned', 'Margarita', 'Cosmopolitan', 'Negroni', 'Moscow Mule', 'Martini', 'Mojito', 'Whiskey Sour', 'French 75',
     'Manhattan', 'Spritz', 'Gimlet', 'Sazerac' ,"Pimm's Cup", 'Vesper', 'Mimosa', 'Tom Collins', 'Daiquiri', 'Dark & Stormy', 'Martinez',];
 //drink recipe object to save favourites
 var drinkRecipe = {
@@ -17,12 +17,12 @@ var drinkRecipe = {
 
 //favourite drinks is an array of objects
 //TODO add function that add's and removes objects on user input
-var favouriteDrink = 
+var favouriteDrink =
 [
 
 ]
 
-//TODO function that adds user's selected drink to favourites 
+//TODO function that adds user's selected drink to favourites
 var favouriteDrinks = [];
 
 const cocktailCard = (id, name, img) =>{
@@ -77,6 +77,20 @@ async function locationRequest(location){
 
 function redirect(location){
     window.location.href = location;
+}
+
+async function searchPageLoad(){
+  favouriteCocktail();
+  let query = window.location.search;
+  query = query.split('=')[1];
+  await cocktailRequest(query, 'filter.php?i=')
+  .then((result) => {
+    let ret = result.drinks;
+    ret.forEach((element) => {
+        $('#results').append(cocktailCard(element.idDrink, element.strDrink, element.strDrinkThumb))
+    });
+
+  })
 }
 
 async function productPageLoad(){
@@ -187,11 +201,11 @@ async function popularDrinks(index){
         console.log(result)
         var popData = result.drinks;
         for(let i = 0; i < index; i++){
-            $('#popular').append(cocktailCard(popData[i].idDrink , popData[i].strDrink, popData[i].strDrinkThumb))        
+            $('#popular').append(cocktailCard(popData[i].idDrink , popData[i].strDrink, popData[i].strDrinkThumb))
         }
-        
+
     })
-    
+
 }
 
 //on load funcations calls
@@ -262,7 +276,7 @@ async function browseGin (index) {
         });
         console.log(ginData);
         for (let i=0; i < index; i++){
-    
+
     $('#browse').append( cocktailCard(browseData[i].idDrink , ginData[i].strDrink, ginData[i].strDrinkThumb))
     }
 })
