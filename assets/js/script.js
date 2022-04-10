@@ -112,12 +112,39 @@ async function productPageLoad(){
     .then(result => drink = result.drinks[0])
     await cocktailRequest(drink.strIngredient1, 'search.php?i=')
     .then( result => Ingredient = result.ingredients[0]);
-
-    console.log(drink)
-    console.log(Ingredient)
-    var alpha = Ingredient.strDescription.toString()
+    if (Ingredient.strDescription != null) {
+      var alpha = Ingredient.strDescription
+    }else {
+      alpha = ""
+    }
     var beta = alpha.substring(0, 300);
+    var method = drink.strInstructions;
+    var ingredients = [];
+    var measurements = [];
+    method = method.split('.');
+    method.pop();
+    $('.method-items').html('')
+    method.forEach((element) => {
+      $('.method-items').append(`<li>${element}</li>`)
+    });
 
+    for(let i = 1; i <= 15; i++){
+      let ingredient = `drink.strIngredient${i}`
+      let measurement = `drink.strMeasure${i}`;
+      if(eval(ingredient) != null && eval(ingredient) != ""){
+        ingredients.push(eval(ingredient));
+        measurements.push(eval(measurement))
+      }
+    }
+    console.log(ingredients)
+
+    $('#ingredients').html('');
+    for (let i = 0; i < ingredients.length; i++) {
+      $('#ingredients').append(
+        `
+        <li><span class="measurement-item">${measurements[i]}</span><span class="ingredient-item">${ingredients[i]}</span></li>
+        `)
+    }
     $('#productTitle').text(drink.strDrink);
     $('#ingredientTitle').text(`Based Ingrediant: ${Ingredient.strIngredient}`);
     $('#ingredientDesc').text(`${beta}...`);
@@ -126,6 +153,12 @@ async function productPageLoad(){
     $('#key-features-base').text(Ingredient.strIngredient);
     $('#key-features-category').text(drink.strCategory);
     $('.base-img').attr('src', 'https://www.thecocktaildb.com/images/ingredients/' + Ingredient.strIngredient + '.png');
+
+    favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
+    if(favData.filter(element => element.id == id).length > 0){
+      $('#productFav').text('remove from favourites');
+      $('#productFav').css({'background': "tomato"});
+    }
 
 }
 
@@ -142,6 +175,7 @@ function removeFav(index){
         }
     })
     localStorage.setItem('FavouriteDrinks', JSON.stringify(newFavData));
+    favouriteCocktail();
 }
 
 function addFav(id,name,img){
@@ -151,9 +185,13 @@ function addFav(id,name,img){
         favData = [{id: id, name: name,img: img}]
     }else{
         favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
-        favData.push({id: id, name: name,img: img});
+        if(!favData.filter(element => element.id == id).length > 0){
+          favData.push({id: id, name: name,img: img});
+        }
     }
     localStorage.setItem('FavouriteDrinks', JSON.stringify(favData));
+    favouriteCocktail();
+
 }
 
 //mapping data from a random drink to featured card
@@ -254,6 +292,24 @@ $('#popularView').click(() =>{
     popularDrinks(8);
 })
 
+$('#productFav').click(async (e) => {
+  let id = window.location.search;
+  id = id.split('=')[1];
+  await cocktailRequest(id, 'lookup.php?i=')
+  .then(result => {
+    console.log(result);
+    favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
+    if(!favData.filter(element => element.id == id).length > 0){
+      addFav(result.drinks[0].idDrink, result.drinks[0].strDrink, result.drinks[0].strDrinkThumb)
+    }else {
+      removeFav(id);
+      $('#productFav').html('<i class="fa-solid fa-heart"></i>Add to my favourites');
+      $('#productFav').css({'background': '#ebebeb', 'color': '#b9b9b9'})
+    }
+
+  })
+})
+
 //eventlisteners
 
 //globally listening for an enter keypress and loading search results into console
@@ -327,6 +383,7 @@ async function browseVodka (index) {
 $('#browseVodka').click(() => {
    browseVodka(8);
 })
+
 
 
 // append detail for Brandy on browse card, limit to 8
