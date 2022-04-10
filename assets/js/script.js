@@ -30,16 +30,23 @@ const cocktailCard = (id, name, img) =>{
         `
         <div class="item-col" >
             <div class="item-content">
-                <div class="pop-img" onclick='productPageRequest(${id})'>
-                    <img class="pre-img" src="${img}" alt="">
+                <div class="item-img" onclick='productPageRequest(${id})'>
+                <div class="content-overlay"></div>
+                    <img src="${img}" alt="">
+                    <div class="content-details fadeIn-bottom">
+                    <p class="content-text">View ${name}</p>
+                  </div>
                 </div>
                 <div class="item-content-text">
-                    <div class="">
-                        <h5>${name}</h5>
-                        <button onclick="addFav('${id}', '${name}', '${img}')">add to Favourites</button>
+                        <div class="item-content-title">
+                            <h5>${name}</h5>
+                        </div
+                        <div class="item-content-favourite">
+                            <a class="btn-add-favourite" onclick="addFav('${id}', '${name}', '${img}')"></a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div>  
         </div>
         `
     )
@@ -105,6 +112,7 @@ async function productPageLoad(){
     .then( result => Ingredient = result.ingredients[0]);
 
     console.log(drink)
+    console.log(Ingredient)
     var alpha = Ingredient.strDescription.toString()
     var beta = alpha.substring(0, 300);
 
@@ -112,6 +120,11 @@ async function productPageLoad(){
     $('#ingredientTitle').text(`Based Ingrediant: ${Ingredient.strIngredient}`);
     $('#ingredientDesc').text(`${beta}...`);
     $('.product-img').attr('src', drink.strDrinkThumb);
+    $('#key-features-glass').text(drink.strGlass);
+    $('#key-features-base').text(Ingredient.strIngredient);
+    $('#key-features-category').text(drink.strCategory);
+    $('.base-img').attr('src', 'https://www.thecocktaildb.com/images/ingredients/' + Ingredient.strIngredient + '.png');
+    
 }
 
 async function productPageRequest(id){
@@ -153,8 +166,8 @@ async function favouriteCocktail(){
             `
                 <div class="item-col">
                     <div class="item-content">
-                        <div class="fav-img">
-                            <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
+                        <div class="item-img">
+                            <img src="./assets/img/cocktail-favourites-background.png" alt="">
                         </div>
                         <div class="item-content-text">
                             <div class="">
@@ -175,16 +188,23 @@ async function favouriteCocktail(){
                 `
                     <div class="item-col">
                         <div class="item-content">
-                            <div class="fav-img" onclick='productPageRequest(${element.id})'>
-                                <img class="pre-img" src="${element.img}" alt="${element.name}">
-                            </div>
-                            <div class="item-content-text">
-                                <div class="">
-                                    <h5>${element.name}</h5>
-                                    <button onclick='removeFav(${element.id})'>remove</button>
-                                    </div>
+                            <div class="item-img" onclick='productPageRequest(${element.id})'>
+                            <div class="content-overlay"></div>
+                                <img src="${element.img}" alt="${element.name}">
+                                <div class="content-details fadeIn-bottom">
+                                    <p class="content-text">View ${element.name}</p>
                                 </div>
                             </div>
+                            
+                            <div class="item-content-text">
+                            <div class="item-content-title">
+                                <h5>${element.name}</h5>
+                            </div
+                            <div class="item-content-favourite">
+                                <a class="btn-remove-favourite" onclick='removeFav(${element.id})'></a>
+                            </div>
+                        </div>
+                     
                         </div>
                     </div>
                 `
@@ -237,7 +257,7 @@ $('#popularView').click(() =>{
 //globally listening for an enter keypress and loading search results into console
 window.addEventListener('keypress', (e) => {
     if(e.key == "Enter"){
-        window.location.href = `/recipes.html?search=${e.target.value}`;
+        window.location.href = `./recipes.html?search=${e.target.value}`;
     }
 })
 
@@ -329,5 +349,3 @@ async function browseBrandy (index) {
 $('#browseBrandy').click(() => {
    browseBrandy(8);
 })
-
-
