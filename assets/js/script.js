@@ -89,12 +89,16 @@ function redirect(location){
 async function searchPageLoad(){
   favouriteCocktail();
   let query = window.location.search;
-  query = query.split('=')[1];
-  console.log(query)
-  await cocktailRequest(query, 'filter.php?i=')
+  let searchParam
+  query = query.split('=')[2];
+  if(window.location.search.split('=')[1].includes('cocktail')){
+    searchParam = 'search.php?s=';
+  }else if (window.location.search.split('=')[1].includes('Ingredient')) {
+    searchParam = 'filter.php?i='
+  }
+  await cocktailRequest(query, searchParam)
   .then((result) => {
     let ret = result.drinks;
-    console.log(ret.length)
     ret.forEach((element) => {
         $('#results').append(cocktailCard(element.idDrink, element.strDrink, element.strDrinkThumb))
     });
@@ -136,8 +140,6 @@ async function productPageLoad(){
         measurements.push(eval(measurement))
       }
     }
-    console.log(ingredients)
-
     $('#ingredients').html('');
     for (let i = 0; i < ingredients.length; i++) {
       $('#ingredients').append(
@@ -197,9 +199,7 @@ function addFav(id,name,img){
 //mapping data from a random drink to featured card
 async function favouriteCocktail(){
     var favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
-    console.log(JSON.parse(localStorage.getItem('FavouriteDrinks')));
     if(favData == null){
-        console.log("none");
         $('#favouriteATag').text("add a recipe")
         //TODO change the placeholder image to a plus image
         $('#favourite').append(
@@ -258,7 +258,6 @@ async function popularDrinks(index){
     $('#popular').html('');
     await cocktailRequest('', 'popular.php')
     .then(result => {
-        console.log(result)
         var popData = result.drinks;
         for(let i = 0; i < index; i++){
             $('#popular').append(cocktailCard(popData[i].idDrink , popData[i].strDrink, popData[i].strDrinkThumb))
@@ -274,9 +273,7 @@ async function popularDrinks(index){
 search.autocomplete({
     source: autoCocktails
 });
-console.log('1')
 function homePageLoad() {
-    console.log('1')
 // currently saving the favourite drinks object into localstorage, just for display purposes
 localStorageFavourites();
 //loading objects into the favourites section
@@ -297,7 +294,6 @@ $('#productFav').click(async (e) => {
   id = id.split('=')[1];
   await cocktailRequest(id, 'lookup.php?i=')
   .then(result => {
-    console.log(result);
     favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
     if(!favData.filter(element => element.id == id).length > 0){
       addFav(result.drinks[0].idDrink, result.drinks[0].strDrink, result.drinks[0].strDrinkThumb)
@@ -315,7 +311,8 @@ $('#productFav').click(async (e) => {
 //globally listening for an enter keypress and loading search results into console
 window.addEventListener('keypress', (e) => {
     if(e.key == "Enter"){
-        window.location.href = `./recipes.html?search=${e.target.value}`;
+        window.location.href = `./recipes.html?option=${$('.search-select').val()}?search=${e.target.value}`;
+
     }
 })
 
@@ -324,7 +321,6 @@ async function browseDrinks (index) {
     $('#browse').html('');
     await cocktailRequest('','latest.php')
     .then (result => {
-        console.log(result)
         var browseData = result.drinks;
         for (let i=0; i < index; i++){
     $('#browse').append( cocktailCard(browseData[i].idDrink , browseData[i].strDrink, browseData[i].strDrinkThumb))
@@ -343,9 +339,7 @@ async function browseGin (index) {
     $('#browse').html('');
     await cocktailRequest('','filter.php?i=gin')
     .then (result => {
-        console.log(result)
         var browseData = result.drinks;
-
         console.log(browseData);
         for (let i=0; i < index; i++){
 
@@ -366,7 +360,6 @@ async function browseVodka (index) {
     $('#browse').html('');
     await cocktailRequest('','filter.php?i=vodka')
     .then (result => {
-        console.log(result)
         var browseData = result.drinks;
 
         console.log(browseData);
@@ -391,10 +384,7 @@ async function browseBrandy (index) {
     $('#browse').html('');
     await cocktailRequest('','filter.php?i=brandy')
     .then (result => {
-        console.log(result)
         var browseData = result.drinks;
-
-        console.log(browseData);
         for (let i=0; i < index; i++){
 
     $('#browse').append( cocktailCard(browseData[i].idDrink, browseData[i].strDrink, browseData[i].strDrinkThumb))

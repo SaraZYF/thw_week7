@@ -72,7 +72,7 @@ h3 a,
 h4 a,
 h5 a {
   color: inherit;
-  
+
 }
 
 a {
@@ -177,13 +177,13 @@ a {
 
 
 
-.btn-add-favourite  { 
+.btn-add-favourite  {
   color: #b9b9b9;
   cursor: pointer;
   font-size: 20px;
 }
 
-.btn-add-favourite::before  { 
+.btn-add-favourite::before  {
  font: var(--fa-font-regular);
  content: "\f004";
  padding-left: 5px;
@@ -194,20 +194,20 @@ a {
   content: "\f004";
   color: #b47b4a;
 }
- 
+
  .btn-add-favourite:active:before {
   font: var(--fa-font-solid);
   content: "\f004";
 }
 
 
-.btn-remove-favourite  { 
+.btn-remove-favourite  {
   color: #b47b4a;
   cursor: pointer;
   font-size: 20px;
 }
 
-.btn-remove-favourite::before  { 
+.btn-remove-favourite::before  {
   font: var(--fa-font-solid);
  content: "\f004";
  padding-left: 5px;
@@ -218,7 +218,7 @@ a {
   content: "\f004";
   color: #b9b9b9;
 }
- 
+
  .btn-remove-favourite:active:before {
   font: var(--fa-font-regular);
   content: "\f004";
@@ -343,7 +343,7 @@ section {
 }
 
 /*------------------------------------*\
-    #Align and Spacing 
+    #Align and Spacing
 \*------------------------------------*/
 
 .text-center {
@@ -352,7 +352,7 @@ section {
 
 
 /*------------------------------------*\
-    #Header and Nav 
+    #Header and Nav
 \*------------------------------------*/
 
 .header-section {
@@ -448,7 +448,7 @@ nav.navbar.bootsnav.navbar-fixed.nav-box.no-background {
 
 .hero-bg {
   background-image:
-  linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.74)), 
+  linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.74)),
   url("../img/header-bg.jpg");
   background-position: 0px 0px;
   background-size: cover;
@@ -468,6 +468,8 @@ width: 40%;
 }
 
 .search-bar-internal {
+display: flex;
+flex-direction: row;
 border: none;
 padding: 0;
 width: 50%;
@@ -505,6 +507,7 @@ font-style: italic;
   padding: 0;
   margin-bottom: 50px;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 }
@@ -517,7 +520,7 @@ font-style: italic;
   font-weight: 400;
   line-height: 45px;
   height: 60px;
-  border-radius: 5px;
+  border-radius: 5px 0px 0px 5px;
   text-transform: capitalize;
   background: transparent url("../img/search.svg") no-repeat 13px center;
   background-color: #fff;
@@ -527,6 +530,12 @@ font-style: italic;
   box-shadow: 0 0 3px 0 #e9e9e9;
   border-color: #bb9356;
   outline: none;
+}
+
+.search-select{
+  height: 60px;
+  border: none;
+  border-radius: 0px 5px 5px 0px;
 }
 
 /* Iternal Page ------------------ */
@@ -852,7 +861,7 @@ font-style: italic;
   /* height: 330px;
   max-height: 330px; */
   position: relative;
- 
+
 }
 
 .item-img .content-overlay {
@@ -995,7 +1004,7 @@ footer .container {
   .filter {
     flex-wrap: nowrap;
 }
-  
+
 }
 
 @media (min-width: 768px){
@@ -1004,9 +1013,9 @@ footer .container {
   }
 
   .featured-col {
-    justify-content: flex-start; 
-    align-items: stretch; 
-    flex-wrap: nowrap; 
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-wrap: nowrap;
     align-content: stretch;
     height: 100%;
     gap: 2%;
@@ -1018,14 +1027,14 @@ footer .container {
   }
 
   .featured-image-col {
-    flex: 1 1 40%; 
+    flex: 1 1 40%;
     order: 2;
   }
-   
+
   .product-col {
-    justify-content: flex-start; 
-    align-items: stretch; 
-    flex-wrap: nowrap; 
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-wrap: nowrap;
     align-content: stretch;
     height: 100%;
     gap: 2%;
@@ -1037,9 +1046,9 @@ footer .container {
     /* flex-grow: 3; */
     order: 1;
   }
-  
+
   .product-image-col {
-    flex: 1 1 40%; 
+    flex: 1 1 40%;
     order: 2;
   }
 
@@ -1051,11 +1060,11 @@ footer .container {
   .product-base, .product-ingredients  {
     flex: 1 1 50%;
   }
-  
+
   .product-method {
-    flex: 1 1 100%; 
+    flex: 1 1 100%;
   }
- 
+
 }
 
 @media (min-width: 992px) {
@@ -1076,9 +1085,9 @@ footer .container {
   .product-base, .product-ingredients  {
     flex: 1 1 25%;
   }
-  
+
   .product-method {
-    flex: 1 1 50%; 
+    flex: 1 1 50%;
   }
 }
 
