@@ -46,7 +46,7 @@ const cocktailCard = (id, name, img) =>{
                         </div>
                     </div>
                 </div>
-            </div>  
+            </div>
         </div>
         `
     )
@@ -90,9 +90,11 @@ async function searchPageLoad(){
   favouriteCocktail();
   let query = window.location.search;
   query = query.split('=')[1];
+  console.log(query)
   await cocktailRequest(query, 'filter.php?i=')
   .then((result) => {
     let ret = result.drinks;
+    console.log(ret.length)
     ret.forEach((element) => {
         $('#results').append(cocktailCard(element.idDrink, element.strDrink, element.strDrinkThumb))
     });
@@ -124,7 +126,7 @@ async function productPageLoad(){
     $('#key-features-base').text(Ingredient.strIngredient);
     $('#key-features-category').text(drink.strCategory);
     $('.base-img').attr('src', 'https://www.thecocktaildb.com/images/ingredients/' + Ingredient.strIngredient + '.png');
-    
+
 }
 
 async function productPageRequest(id){
@@ -195,7 +197,7 @@ async function favouriteCocktail(){
                                     <p class="content-text">View ${element.name}</p>
                                 </div>
                             </div>
-                            
+
                             <div class="item-content-text">
                             <div class="item-content-title">
                                 <h5>${element.name}</h5>
@@ -204,7 +206,7 @@ async function favouriteCocktail(){
                                 <a class="btn-remove-favourite" onclick='removeFav(${element.id})'></a>
                             </div>
                         </div>
-                     
+
                         </div>
                     </div>
                 `
@@ -287,7 +289,7 @@ async function browseGin (index) {
     .then (result => {
         console.log(result)
         var browseData = result.drinks;
-        
+
         console.log(browseData);
         for (let i=0; i < index; i++){
 
@@ -310,7 +312,7 @@ async function browseVodka (index) {
     .then (result => {
         console.log(result)
         var browseData = result.drinks;
-        
+
         console.log(browseData);
         for (let i=0; i < index; i++){
 
@@ -334,7 +336,7 @@ async function browseBrandy (index) {
     .then (result => {
         console.log(result)
         var browseData = result.drinks;
-        
+
         console.log(browseData);
         for (let i=0; i < index; i++){
 
