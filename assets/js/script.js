@@ -249,7 +249,7 @@ popularDrinks(4);
 //loading objects into browse section
 browseDrinks(8);
 
-
+weatherRequest()
 }
 
 
@@ -359,7 +359,7 @@ $('#browseBrandy').click(() => {
 
 
 // //weather request
-// async function weatherRequest (lat,lon){
+//  async function weatherRequest (lat,lon){
 //     let data;
 //     await fetch(`${locationApi.uri}weather?lat=${lat}&lon=${lon}$appid=${locationApi.key}`)
 //     .then(response =>response.json())
@@ -368,82 +368,64 @@ $('#browseBrandy').click(() => {
 //     return data;
 // }
 
-// // //location, Melbourne, Weather of the day, openweather API
-// async function weatherRequest(){
-//     $('#featured').html('');
-//     await weatherRequest('38','144')
-//     .then(result => {
-//         console.log(result);
-//         var daily = result.main.feels_like;
-//           var weather = $('#weather-condition')[0];
-//         if daily.value > 300 {
-//              weather.innerHTML +="warm";
-//              browseMint(0);
-//              } 
-//               else {
-//             weather.innerHTML +="cold";
-//            browseCinnamon(0);
-//               }
-
-//             })
-
-//         }
+// //location, Melbourne, Weather of the day, openweather API
+async function weatherRequest(){
+    $('#featured').html('');
+    await locationRequest('melbourne, au')
+    .then(result => {
+        var daily = result.main.feels_like;
+        var weather = $('#weather-condition');
+        if(daily > 25) {
+          browseMint(0);
+        }else{
+          browseCinnamon(0);
+        }
+      })
+    }
 
 // // if feels like >300, 25C unit=Kelvin, append span text =warm, and coctail api,i=mint
 // // if feels like <300, append text =cool, and coctail api, i=cinnamon
 
 
-// //define featurecard
-// const featureCard = (id, name, img)  =>{
-//     return(
-//         `
-// <div class="row featured-col">
-//       <!-- <div class="featured-col"> -->
-//       <div class="featured-text">
-//       <h3 id="weather">The weather outside is <span id="weather-condition"></span>, can we suggest a...</h3>
-//       <div class="featured-name">${name}</div>
-//       <p>Who doesn't love a Margarita, right? Hailing from Mexico, this refreshing, Tequila-based cocktail has long been a darling of the global bar scene.</p>
-//       <a class="btn" href="#">Read more</a>
-//         </div>
-//         <div class="featured-image-col">
-//             <img class="featured-img" onclick='productPageRequest(${id})'>
-//             <img src="${img}" alt="">
-//         </div>
-//       <!-- </div> -->
-//     </div>
-//     `
-//     )
-//     }
+//define featurecard
+const featureCard = (id, name, img, weather)  =>{
+    return(
+        `
+<div class="row featured-col">
+      <!-- <div class="featured-col"> -->
+      <div class="featured-text">
+      <h3 id="weather">The weather outside is <span id="weather-condition">${weather}</span>, can we suggest a...</h3>
+      <div class="featured-name">${name}</div>
+      <p>Who doesn't love a Margarita, right? Hailing from Mexico, this refreshing, Tequila-based cocktail has long been a darling of the global bar scene.</p>
+      <a class="btn" href="#">Read more</a>
+        </div>
+        <div class="featured-image-col">
+            <img class="featured-img" onclick='productPageRequest(${id})'>
+            <img src="${img}" alt="">
+        </div>
+      <!-- </div> -->
+    </div>
+    `
+    )
+    }
 
 
-// //function search mintCoctail, return 1 result
-// async function browseMint (index) {
-//     $('#featured').html('');
-//     await cocktailRequest('','filter.php?i=mint')
-//     .then (result => {
-//         console.log(result)
-//         var browseData = result.drinks;
+//function search mintCoctail, return 1 result
+async function browseMint (index) {
+    $('#featured').html('');
+    await cocktailRequest('','filter.php?i=mint')
+    .then (result => {
+        var browseData = result.drinks;
+    $('#featured').append( featureCard(browseData[0].idDrink, browseData[0].strDrink, browseData[0].strDrinkThumb, 'warm'))
+})
+}
 
-//         console.log(browseData);
-//         for (let i=0; i <=index; i++){
-
-//     $('#featured').append( featureCard(browseData[i].idDrink, browseData[i].strDrink, browseData[i].strDrinkThumb))
-//     }
-// })
-// }
-
-// //function search cinnamonCoctail, return 1 result
-// async function browseCinnamon () {
-//     $('#featured').html('');
-//     await cocktailRequest('','filter.php?i=cinnamon')
-//     .then (result => {
-//         console.log(result)
-//         var browseData = result.drinks;
-
-//         console.log(browseData);
-//         for (let i=0; i <=1; i++){
-
-//     $('#featured').append( featureCard(browseData[i].idDrink, browseData[i].strDrink, browseData[i].strDrinkThumb))
-//     }
-// })
-// }
+//function search cinnamonCoctail, return 1 result
+async function browseCinnamon() {
+    $('#featured').html('');
+    await cocktailRequest('','filter.php?i=cinnamon')
+    .then (result => {
+        var browseData = result.drinks;
+    $('#featured').append( featureCard(browseData[0].idDrink, browseData[0].strDrink, browseData[0].strDrinkThumb, 'cold'))
+})
+}
