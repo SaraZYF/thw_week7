@@ -223,7 +223,7 @@ localStorageFavourites();
 favouriteCocktail();
 //loading objects into the popular section
 popularDrinks(4);
-
+//loading objects into browse section
 browseDrinks(8);
 }
 
@@ -244,7 +244,7 @@ window.addEventListener('keypress', (e) => {
 //  append detail for browse card, limit to 8 blocks
 async function browseDrinks (index) {
     $('#browse').html('');
-    await cocktailRequest('','search.php?f=a')
+    await cocktailRequest('','latest.php')
     .then (result => {
         console.log(result)
         var browseData = result.drinks;
@@ -255,38 +255,79 @@ async function browseDrinks (index) {
 }
 
 // //click ALL load objects to browse section
-// $('#browseAll').click(() => {
-//    browseDrinks(8);
-// })
+$('#browseAll').click(() => {
+   browseDrinks(8);
+})
 
 
 // append detail for GIN on browse card, limit to 8
 async function browseGin (index) {
     $('#browse').html('');
-    await cocktailRequest('','search.php?f=a')
+    await cocktailRequest('','filter.php?i=gin')
     .then (result => {
         console.log(result)
         var browseData = result.drinks;
-        var ginData = browseData.filter((drink) => {
-            for (keys in drink){
-                if(drink[keys] === "Gin"){
-                    return drink;
-                }
-            }
-        });
-        console.log(ginData);
+        
+        console.log(browseData);
         for (let i=0; i < index; i++){
 
-    $('#browse').append( cocktailCard(browseData[i].idDrink , ginData[i].strDrink, ginData[i].strDrinkThumb))
+    $('#browse').append( cocktailCard(browseData[i].idDrink, browseData[i].strDrink, browseData[i].strDrinkThumb))
     }
 })
 }
 
 
 
-// click ALL load objects to browse section
+// click GIN load objects to browse section
 $('#browseGin').click(() => {
    browseGin(8);
 })
 
-// TODO go to pdp page on button click
+// append detail for VODKA on browse card, limit to 8
+async function browseVodka (index) {
+    $('#browse').html('');
+    await cocktailRequest('','filter.php?i=vodka')
+    .then (result => {
+        console.log(result)
+        var browseData = result.drinks;
+        
+        console.log(browseData);
+        for (let i=0; i < index; i++){
+
+    $('#browse').append( cocktailCard(browseData[i].idDrink, browseData[i].strDrink, browseData[i].strDrinkThumb))
+    }
+})
+}
+
+
+
+// click VODKA load objects to browse section
+$('#browseVodka').click(() => {
+   browseVodka(8);
+})
+
+
+// append detail for Brandy on browse card, limit to 8
+async function browseBrandy (index) {
+    $('#browse').html('');
+    await cocktailRequest('','filter.php?i=brandy')
+    .then (result => {
+        console.log(result)
+        var browseData = result.drinks;
+        
+        console.log(browseData);
+        for (let i=0; i < index; i++){
+
+    $('#browse').append( cocktailCard(browseData[i].idDrink, browseData[i].strDrink, browseData[i].strDrinkThumb))
+    }
+})
+}
+
+
+
+// click Brandy load objects to browse section
+$('#browseBrandy').click(() => {
+   browseBrandy(8);
+})
+
+
