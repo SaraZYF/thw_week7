@@ -40,7 +40,7 @@ const cocktailCard = (id, name, img) =>{
                 <div class="item-content-text">
                         <div class="item-content-title">
                             <h5>${name}</h5>
-                        </div
+                        </div>
                         <div class="item-content-favourite">
                             <a class="btn-add-favourite" onclick="addFav('${id}', '${name}', '${img}')"></a>
                         </div>
@@ -72,7 +72,7 @@ async function cocktailRequest(query, param){
 }
 
 
-//location is the desired location of weather
+///location is the desired location of weather
 async function locationRequest(location){
     let data;
     await fetch(`${locationApi.uri}weather?q=${location}&units=metric&APPID=${locationApi.key}`)
@@ -85,6 +85,7 @@ async function locationRequest(location){
 function redirect(location){
     window.location.href = location;
 }
+
 
 async function searchPageLoad(){
   favouriteCocktail();
@@ -247,6 +248,8 @@ favouriteCocktail();
 popularDrinks(4);
 //loading objects into browse section
 browseDrinks(8);
+
+
 }
 
 
@@ -351,3 +354,87 @@ async function browseBrandy (index) {
 $('#browseBrandy').click(() => {
    browseBrandy(8);
 })
+
+
+
+
+
+// //location, Melbourne, Weather of the day, openweather API
+// async function weatherRequest(){
+//     $('#featured').html('');
+//     await weatherRequest('', 'weather?lat=38&lon=144&appid=${locationApi.key}}')
+//     .then(result => {
+//         console.log(result);
+//         var daily = result.main.feels_like;
+//           var weather = $('#weather-condition')[0];
+//         if daily.value > 300 {
+//              weather.innerHTML +="warm";
+//              browseMint(0);
+//              } 
+//               else {
+//             weather.innerHTML +="cold";
+//            browseCinnamon(0);
+//               }
+
+//             })
+
+//         }
+
+// // if feels like >300, 25C unit=Kelvin, append span text =warm, and coctail api,i=mint
+// // if feels like <300, append text =cool, and coctail api, i=cinnamon
+
+
+// //define featurecard
+// const featureCard = (id, name, img)  =>{
+//     return(
+//         `
+// <div class="row featured-col">
+//       <!-- <div class="featured-col"> -->
+//       <div class="featured-text">
+//       <h3 id="weather">The weather outside is <span id="weather-condition"></span>, can we suggest a...</h3>
+//       <div class="featured-name">${name}</div>
+//       <p>Who doesn't love a Margarita, right? Hailing from Mexico, this refreshing, Tequila-based cocktail has long been a darling of the global bar scene.</p>
+//       <a class="btn" href="#">Read more</a>
+//         </div>
+//         <div class="featured-image-col">
+//             <img class="featured-img" onclick='productPageRequest(${id})'>
+//             <img src="${img}" alt="">
+//         </div>
+//       <!-- </div> -->
+//     </div>
+//     `
+//     )
+//     }
+
+
+// //function search mintCoctail, return 1 result
+// async function browseMint (index) {
+//     $('#featured').html('');
+//     await cocktailRequest('','filter.php?i=mint')
+//     .then (result => {
+//         console.log(result)
+//         var browseData = result.drinks;
+
+//         console.log(browseData);
+//         for (let i=0; i <=index; i++){
+
+//     $('#featured').append( featureCard(browseData[i].idDrink, browseData[i].strDrink, browseData[i].strDrinkThumb))
+//     }
+// })
+// }
+
+// //function search cinnamonCoctail, return 1 result
+// async function browseCinnamon () {
+//     $('#featured').html('');
+//     await cocktailRequest('','filter.php?i=cinnamon')
+//     .then (result => {
+//         console.log(result)
+//         var browseData = result.drinks;
+
+//         console.log(browseData);
+//         for (let i=0; i <=1; i++){
+
+//     $('#featured').append( featureCard(browseData[i].idDrink, browseData[i].strDrink, browseData[i].strDrinkThumb))
+//     }
+// })
+// }
