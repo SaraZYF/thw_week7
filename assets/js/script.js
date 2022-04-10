@@ -358,11 +358,20 @@ $('#browseBrandy').click(() => {
 
 
 
+// //weather request
+// async function weatherRequest (lat,lon){
+//     let data;
+//     await fetch(`${locationApi.uri}weather?lat=${lat}&lon=${lon}$appid=${locationApi.key}`)
+//     .then(response =>response.json())
+//     .then(result => data = result)
+//     .catch(err => console.log(err))
+//     return data;
+// }
 
-// //location, Melbourne, Weather of the day, openweather API
+// // //location, Melbourne, Weather of the day, openweather API
 // async function weatherRequest(){
 //     $('#featured').html('');
-//     await weatherRequest('', 'weather?lat=38&lon=144&appid=${locationApi.key}}')
+//     await weatherRequest('38','144')
 //     .then(result => {
 //         console.log(result);
 //         var daily = result.main.feels_like;
