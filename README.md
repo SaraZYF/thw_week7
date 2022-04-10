@@ -20,7 +20,7 @@ J-QueryUI 1.13.1
 Google fonts
 
 Devices Support
-Desktop, MObile
+Desktop, Mobile
 
 The External APIs that used in this project:
 
