@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CocktailSearch</title>
-    <link rel="stylesheet" href="assets/css/reset.css" />
-    <link rel="stylesheet" href="./assets/css/style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/13c9446978.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaken&Stirred | Cocktail Recipe Finder</title>
+  <link rel="icon"type="image/x-icon"  href="./assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/13c9446978.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="./assets/css/reset.css" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
 <body onload="homePageLoad()">
 
 <header class="header-section">
-    <div class="container"> 
-      <h1 class="logo">shaken<span>&</span>stirred</h1>
+    <div class="container">
+      <h1 onclick="redirect('index.html')"  class="logo">shaken<span>&</span>stirred</h1>
       <nav class="main-nav">
         <ul class="main-nav-list">
-          <li>
+          <!-- <li>
             <a href="#" class="active">Home</a>
           </li>
           <li>
@@ -29,7 +30,7 @@
           </li>
           <li>
             <a href="./product.html">Product</a>
-          </li>
+          </li> -->
         </ul>
       </nav>
     </div>
@@ -45,6 +46,10 @@
                 </div>
                  <div class="search-bar">
                     <input id="search" class="search-input search-icon" type="text" placeholder="Search..">
+                    <select class="search-select" name="search-select">
+                      <option value="Ingredient">Ingredient</option>
+                      <option value="cocktail">cocktail Name</option>
+                    </select>
                 </div>
               </div>
             </div>
@@ -52,20 +57,17 @@
 </section>
 
 <section class="featured">
-  <div class="container">
-    <div id="featured" class="row featured-col">
-      <!-- <div class="featured-col"> -->
+  <div id="featured" class="container">
+    <div class="row featured-col">
       <div class="featured-text">
-        <h3 id="weather">The weather outside is <span id="weather-condition">sunny</span>, can we suggest a...</h3>
+        <h3>The weather outside is <span id="weather-condition">sunny</span>, can we suggest a...</h3>
         <div class="featured-name">Frozen Watermelon Margarita</div>
         <p>Who doesn't love a Margarita, right? Hailing from Mexico, this refreshing, Tequila-based cocktail has long been a darling of the global bar scene.</p>
         <a class="btn" href="#">Read more</a>
         </div>
         <div class="featured-image-col">
-            <img class="featured-img">
-            <img src="./assets/img/header-bg.jpg" alt="">
+            <img class="featured-img" src="./assets/img/header-bg.jpg" alt="">
         </div>
-      <!-- </div> -->
     </div>
   </div>
 </section>
@@ -74,202 +76,49 @@
   <div class="container">
     <div class="row">
       <div class="section-title col-space">
-         <h4>Popular</h4>
-          <a class="btn-more" id="">View Popular</a>
-    </div>
-    <div  class="content-col">
-      <div id="popular" class="row-items">
-        
-        <div class="item-col">
-            <div class="item-content">
-              <div class="item-img">
-                <img src="./assets/img/cocktail-list-placeholder.png" alt="">
-              </div>
-              <div class="item-content-text">
-                <div class="">
-                  <h5>Frozen Watermelon Margarita</h5>
-                </div>
-                <a class="btn-add-favourite"></a>add to Favourites</a>
-              </div>
-            </div>
-          </div>
-          <div class="item-col">
-            <div class="item-content">
-              <div class="item-img">
-                <img src="./assets/img/cocktail-list-placeholder.png" alt="">
-              </div>
-              <div class="item-content-text">
-                <div class="item-name">
-                  <h5>Frozen Watermelon Margarita</h5>
-                </div>
-                <div class="item-add-favourite">
-              </div>
-            </div>
-          </div>
-          <div class="item-col">
-            <div class="item-content">
-              <div class="item-img">
-                <img src="./assets/img/cocktail-list-placeholder.png" alt="">
-              </div>
-              <div class="item-content-text">
-                <div class="">
-                  <h5>Frozen Watermelon Margarita</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item-col">
-            <div class="item-content">
-              <div class="pop-img">
-                <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-              </div>
-              <div class="item-content-text">
-                <div class="">
-                  <h5>Frozen Watermelon Margarita</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-     
+        <h4>Popular</h4>
+        <a class="btn-more" id="search-popular">View Popular</a>
       </div>
-      <div class="col-center">
-        <a id="popularView" class="btn-see-more">Display More</a>
+      <div class="content-col">
+        <div id="popular" class="row-items popular-col"></div>
      </div>
-    </div>
     </div>
   </div>
 </section>
 
 
-  <section class="browse dark-bg">
-    <div class="container">
-      <div class="row browse-col">
-        <div class="section-title">
-            <h3>Feeling adventurous, why not have a browse and try something new.</h3>
-            <p>Nulla metus metus ullamcorper vel tincidunt sed euismod nibh Quisque volutpat condimentum velit class aptent.</p>  
+<section class="browse dark-bg">
+  <div class="container">
+    <div class="row browse-col">
+      <div class="section-title">
+        <h3>Feeling adventurous, why not have a browse and try something new.</h3>
       </div>
       <div class="browse-filter">
-         <div class="filter">
-            <span data-filter="*" class="active" id="browseAll">All</span>
-            <span data-filter=".filter-gin" id="browseGin">Gin</span>
-            <span data-filter=".filter-vodka" id="browseVodka">Vodka</span>
-            <span data-filter=".filter-tequila" id="browseBrandy">Brandy</span>
+        <div class="filter">
+          <span id="browseAll" class="active">All</span>
+          <span id="browseGin">Gin</span>
+          <span id="browseVodka">Vodka</span>
+          <span id="browseTequila">Tequila</span>
         </div>
-    </div>
- 
-      <div class="content-col">
-        <div id="browse" class="row-items">
-            <!-- <div class="item-col">
-                <div class="item-content">
-                  <div class="browse-img">
-                    <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                  </div>
-                  <div class="item-content-text">
-                    <div class="">
-                      <h5>Frozen Watermelon Margarita</h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="item-col">
-                <div class="item-content">
-                  <div class="browse-img">
-                    <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                  </div>
-                  <div class="item-content-text">
-                    <div class="">
-                      <h5>Frozen Watermelon Margarita</h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="item-col">
-                <div class="item-content">
-                  <div class="browse-img">
-                    <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                  </div>
-                  <div class="item-content-text">
-                    <div class="">
-                      <h5>Frozen Watermelon Margarita</h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="item-col">
-                <div class="item-content">
-                  <div class="browse-img">
-                    <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                  </div>
-                  <div class="item-content-text">
-                    <div class="">
-                      <h5>Frozen Watermelon Margarita</h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="item-col">
-                <div class="item-content">
-                  <div class="browse-img">
-                    <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                  </div>
-                  <div class="item-content-text">
-                    <div class="">
-                      <h5>Frozen Watermelon Margarita</h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="item-col">
-                <div class="item-content">
-                  <div class="browse-img">
-                    <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                  </div>
-                  <div class="item-content-text">
-                    <div class="">
-                      <h5>Frozen Watermelon Margarita</h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="item-col">
-                <div class="item-content">
-                  <div class="browse-img">
-                    <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                  </div>
-                  <div class="item-content-text">
-                    <div class="">
-                      <h5>Frozen Watermelon Margarita</h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="item-col">
-                <div class="item-content">
-                  <div class="browse-img">
-                    <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                  </div>
-                  <div class="item-content-text">
-                    <div class="">
-                      <h5>Frozen Watermelon Margarita</h5>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
+      </div>
+        <div class="content-col">
+          <div id="browse-all-col">
+            <div id="browse-all" class="row-items"></div>
           </div>
-         </div>
-         </div>
- 
+          <div id="browse-gin-col">
+            <div id="browse-gin" class="row-items"></div>
+          </div>
+          <div id="browse-vodka-col">
+            <div id="browse-vodka" class="row-items"></div>
+          </div>
+          <div id="browse-tequila-col">
+            <div id="browse-tequila" class="row-items"></div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
 
   <section class="favourites">
@@ -277,7 +126,7 @@
       <div class="row">
         <div class="content-col section-title col-space">
            <h4>My favourites</h4>
-            <a href="#" class="btn-more" id="favouriteATag">View More</a>
+            <a href="#popular" class="btn-more" id="favouriteATag">View More</a>
       </div>
       <div class="content-col">
         <div id="favourite" class="row-items">
@@ -295,60 +144,6 @@
             </div>
         </div>
 
-          <!--
-          <div class="item-col">
-              <div class="item-content">
-                <div class="fav-img">
-                  <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                </div>
-                <div class="item-content-text">
-                  <div class="">
-                    <h5>Frozen Watermelon Margarita</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="item-col">
-              <div class="item-content">
-                <div class="fav-img">
-                  <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                </div>
-                <div class="item-content-text">
-                  <div class="">
-                    <h5>Frozen Watermelon Margarita</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="item-col">
-              <div class="item-content">
-                <div class="fav-img">
-                  <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                </div>
-                <div class="item-content-text">
-                  <div class="">
-                    <h5>Frozen Watermelon Margarita</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="item-col">
-              <div class="item-content">
-                <div class="fav-img">
-                  <img class="pre-img" src="./assets/img/cocktail-list-placeholder.png" alt="">
-                </div>
-                <div class="item-content-text">
-                  <div class="">
-                    <h5>Frozen Watermelon Margarita</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          -->
         </div>
       </div>
       </div>
@@ -362,15 +157,15 @@
           <li>
             <a href="#">Copyright - Team 4</a>
           </li>
-         
+
         </ul>
       </nav>
     </div>
   </footer>
-    
 
-    
+
+
   </body>
-  <script src="./assets/js/script.js"></script>  
+  <script src="./assets/js/script.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </html>

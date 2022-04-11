@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CocktailSearch</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/13c9446978.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="assets/css/reset.css" />
-    <link rel="stylesheet" href="./assets/css/style.css" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaken&Stirred | Cocktail Recipe Finder</title>
+  <link rel="icon"type="image/x-icon"  href="./assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/13c9446978.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="./assets/css/reset.css" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
 
 <body onload="productPageLoad()">
   <header class="header-section">
       <div class="container">
-        <h1 class="logo">shaken<span>&</span>stirred</h1>
+        <h1 onclick="redirect('index.html')"  class="logo">shaken<span>&</span>stirred</h1>
         <nav class="main-nav">
           <ul class="main-nav-list">
             <li>
               <a href="./index.html">Home</a>
             </li>
-            <li>
+            <!-- <li>
               <a href="./recipes.html">Results</a>
             </li>
             <li>
               <a href="#" class="active">Product</a>
-            </li>
+            </li> -->
           </ul>
         </nav>
       </div>
@@ -40,11 +41,14 @@
     <div class="row">
     <div class="hero-col-internal">
         <div class="hero-text-internal">
-        <h2>Search phrase</h2>
-          <!-- <p class="subtitle-internal">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci ipsum.</p> -->
+          <h2>Search Recipes</h2>
         </div>
         <div class="search-bar-internal">
           <input id="search" class="search-input search-icon" type="text" placeholder="Search..">
+          <select class="search-select" name="search-select">
+            <option value="Ingredient">Ingredient</option>
+            <option value="cocktail">cocktail Name</option>
+          </select>
         </div>
       </div>
     </div>
@@ -62,7 +66,7 @@
           <li><span class="key-features-name">Category:</span><span id="key-features-category"></span></li>
           <li><span class="key-features-name">Glass:</span><span id="key-features-glass"></span></li>
           </ul>
-        <a class="btn-favourite" href="#"><i class="fa-solid fa-heart"></i>Add to my favourites</a>
+        <a class="btn-favourite" id="productFav" href="#">Add to my favourites</a>
          </div>
         <div class="product-image-col">
           <img class="product-img" alt="">
@@ -75,20 +79,14 @@
         </div>
       <div class="product-ingredients">
       <h4>Ingredients</h4>
-        <ul>
-          <li><span class="measurement-item">2 oz</span><span class="ingredient-item">Light rum</span></li>
-          <li><span class="measurement-item">2 oz</span><span class="ingredient-item">Light rum</span></li>
-          <li><span class="measurement-item">2 oz</span><span class="ingredient-item">Light rum</span></li>
-          <li><span class="measurement-item">2 oz</span><span class="ingredient-item">Light rum</span></li>
-          <li><span class="measurement-item">2 oz</span><span class="ingredient-item">Light rum</span></li>
+        <ul id="ingredients">
+          <!-- <li><span class="measurement-item"></span><span class="ingredient-item"></span></li> -->
         </ul>
       </div>
       <div class="product-method">
         <h4>Method</h4>
         <ol class="method-items">
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt praesentium voluptas sed, debitis, deleniti dignissimos odio molestiae nihil expedita, quam suscipit facilis inventore. Animi nulla consequatur veritatis mollitia quod unde.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt praesentium voluptas sed, debitis, deleniti dignissimos odio molestiae nihil expedita, quam suscipit facilis inventore. Animi nulla consequatur veritatis mollitia quod unde.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt praesentium voluptas sed, debitis, deleniti dignissimos odio molestiae nihil expedita, quam suscipit facilis inventore. Animi nulla consequatur veritatis mollitia quod unde.</li>
+          <!-- <li></li> -->
         </ol>
        </div>
     </div>
