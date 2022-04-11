@@ -71,6 +71,17 @@ async function cocktailRequest(query, param){
         return data;
 }
 
+$("#popularDisplay").on("click", function() {
+    $('#popularDisplay').text('Display Less')
+    $('#popularDisplay').toggleClass('btn-see-more')
+    $('#popularDisplay').toggleClass('btn-see-less')
+    if ($("#popularDisplay").hasClass("btn-see-more")) {
+        $(".popular-col").css("max-height", "calc(50% - 30px)");
+        $('#popularDisplay').text('Display More')
+    } else $(".popular-col").css("max-height", "100%");
+
+});
+
 
 //location is the desired location of weather
 async function locationRequest(location){
@@ -292,24 +303,12 @@ localStorageFavourites();
 //loading objects into the favourites section
 favouriteCocktail();
 //loading objects into the popular section
-popularDrinks(4);
+popularDrinks(8);
 //loading objects into browse section
 browseDrinks(8);
 
 weatherRequest();
 }
-
-var extended = false;
-$('#popularView').click(() =>{
-  if(!extended){
-    popularDrinks(8);
-    $('#popularView').text('display less');
-  }else {
-    popularDrinks(4);
-    $('#popularView').text('display more');
-  }
-  extended = !extended;
-})
 
 $('#search-popular').click(() =>{
   redirect('./recipes.html?option=popular?search=')
