@@ -618,7 +618,7 @@ font-style: italic;
   text-align: justify;
   overflow: hidden;
   transition: all 0.5s ease 0s;
-  max-height: calc(50% - 30px);
+/*   max-height: calc(50% - 30px); */
 }
 /*------------------------------------*\
     #Section - Browse
