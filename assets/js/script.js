@@ -331,7 +331,7 @@ const featureCard = (id, name, img, weather)  =>{
       <div class="featured-text">
             <h3 id="weather">The weather outside is <span id="weather-condition">${weather}</span>, can we suggest a...</h3>
             <div class="featured-name">${name}</div>
-            <p>Who doesn't love a Margarita, right? Hailing from Mexico, this refreshing, Tequila-based cocktail has long been a darling of the global bar scene.</p>
+            <p>Who doesn't love a ${name}, right? This refreshing cocktail has long been a darling of the global bar scene.</p>
             <a class="btn" onclick='productPageRequest(${id})'>Read more</a>
       </div>
       <div class="featured-image-col">
@@ -348,7 +348,7 @@ const featureCard = (id, name, img, weather)  =>{
 //function search mintCoctail, return 1 result
 async function browseMint (index) {
     $('#featured').html('');
-    await cocktailRequest('','filter.php?i=mint')
+    await cocktailRequest('','filter.php?i=Lemon%20vodka')
     .then (result => {
         var browseData = result.drinks;
     $('#featured').append( featureCard(browseData[0].idDrink, browseData[0].strDrink, browseData[0].strDrinkThumb, 'warm'))
@@ -358,7 +358,7 @@ async function browseMint (index) {
 //function search cinnamonCoctail, return 1 result
 async function browseCinnamon() {
     $('#featured').html('');
-    await cocktailRequest('','filter.php?i=cinnamon')
+    await cocktailRequest('','filter.php?i=gin')
     .then (result => {
         var browseData = result.drinks;
     $('#featured').append( featureCard(browseData[0].idDrink, browseData[0].strDrink, browseData[0].strDrinkThumb, 'cold'))

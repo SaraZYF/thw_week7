@@ -625,7 +625,7 @@ font-style: italic;
 \*------------------------------------*/
 
 .featured {
-  padding-bottom: 10px;
+  padding-bottom: 30px;
 }
 
 .featured-text {
@@ -658,6 +658,7 @@ font-style: italic;
 .featured-text h3 {
   margin-bottom: 20px;
   font-size: 2.2em;
+  margin-top: 10px;
 }
 
 .featured-text p {
