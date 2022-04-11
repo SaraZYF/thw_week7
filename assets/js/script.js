@@ -225,23 +225,7 @@ async function favouriteCocktail(){
     if(favData == null){
         $('#favouriteATag').text("add a recipe")
         //TODO change the placeholder image to a plus image
-        $('#favourite').append(
-            `
-                <div class="item-col">
-                    <div class="item-content">
-                        <div class="item-img">
-                            <img src="./assets/img/cocktail-favourites-background.png" alt="">
-                        </div>
-                        <div class="item-content-text">
-                            <div class="">
-                                <h5></h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `
-        )
+
     }else{
         $('#favourite').html('');
         $('#favouriteATag').text("browse more")
