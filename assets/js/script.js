@@ -269,35 +269,14 @@ async function productPageLoad(){
 
     favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
     if(favData.filter(element => element.id == id).length > 0){
-      $('#productFav').text('remove from favourites');
-      $('#productFav').css({'background': "tomato"});
+      $('#productFav').text('Remove from favourites');
+      $('#productFav').addClass('btn-active');
     }
 }
 
 //onclick events
 $('#search-popular').click(() =>{
   redirect('./recipes.html?option=popular?search=')
-})
-
-//so that there is only one active button on the browse card
-$('.filter').children().click((e) => {
-  $('.filter').children().removeClass('active');
-  $(`#${e.target.id}`).addClass('active');
-
-})
-
-$('#browseAll').click(() => {
-   browseDrinks(8);
-})
-
-// click VODKA load objects to browse section
-$('#browseVodka').click(() => {
-   browseVodka(8);
-})
-
-// click GIN load objects to browse section
-$('#browseGin').click(() => {
-   browseGin(8);
 })
 
 // //click ALL load objects to browse section
@@ -311,24 +290,12 @@ $('#productFav').click(async (e) => {
       addFav(result.drinks[0].idDrink, result.drinks[0].strDrink, result.drinks[0].strDrinkThumb)
     }else {
       removeFav(id);
-      $('#productFav').html('<i class="fa-solid fa-heart"></i>Add to my favourites');
+      $('#productFav').html('Add to my favourites');
       $('#productFav').css({'background': '#ebebeb', 'color': '#b9b9b9'})
     }
 
   })
 })
-
-//change the popular drinks section to show more than 4 items
-$("#popularDisplay").on("click", function() {
-    $('#popularDisplay').text('Display Less')
-    $('#popularDisplay').toggleClass('btn-see-more')
-    $('#popularDisplay').toggleClass('btn-see-less')
-    if ($("#popularDisplay").hasClass("btn-see-more")) {
-        $(".popular-col").css("max-height", "calc(50% - 30px)");
-        $('#popularDisplay').text('Display More')
-    } else $(".popular-col").css("max-height", "100%");
-
-});
 
 //eventlisteners
 
