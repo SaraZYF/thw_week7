@@ -175,7 +175,7 @@ localStorageFavourites();
 //loading objects into the favourites section
 favouriteCocktail();
 //loading objects into the popular section
-popularDrinks(8);
+popularDrinks(4);
 //loading objects into browse section
 browseDrinks(8);
 browseGin(8);
