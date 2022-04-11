@@ -382,6 +382,7 @@ section {
 /* Logo ------------------ */
 
 .logo {
+  cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 1.5em;
   font-weight: 700;
@@ -450,6 +451,7 @@ nav.navbar.bootsnav.navbar-fixed.nav-box.no-background {
   background-image:
   linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.74)),
   url("../img/header-bg.jpg");
+  z-index: -1;
   background-position: 0px 0px;
   background-size: cover;
   background-repeat: no-repeat;
@@ -503,6 +505,7 @@ font-style: italic;
 
 
 .search-bar {
+  z-index: 1;
   border: none;
   padding: 0;
   margin-bottom: 50px;
@@ -512,6 +515,14 @@ font-style: italic;
   justify-content: center;
 }
 
+.ui-autocomplete{
+  z-index: 1;
+  background: #ebebeb;
+  color: #000;
+  width: 400px;
+  border-radius: 0px 0px 5px 5px;
+  padding: 5px 25px;
+}
 .search-input {
   width: 80%;
   border: 1px solid #fff;
@@ -535,6 +546,7 @@ font-style: italic;
 .search-select{
   height: 60px;
   border: none;
+  background: #fff;
   border-radius: 0px 5px 5px 0px;
 }
 

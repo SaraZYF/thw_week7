@@ -18,10 +18,10 @@
 
 <header class="header-section">
     <div class="container">
-      <h1 class="logo">shaken<span>&</span>stirred</h1>
+      <h1 onclick="redirect('index.html')"  class="logo">shaken<span>&</span>stirred</h1>
       <nav class="main-nav">
         <ul class="main-nav-list">
-          <li>
+          <!-- <li>
             <a href="#" class="active">Home</a>
           </li>
           <li>
@@ -29,7 +29,7 @@
           </li>
           <li>
             <a href="./product.html">Product</a>
-          </li>
+          </li> -->
         </ul>
       </nav>
     </div>
@@ -56,7 +56,7 @@
 </section>
 
 <section class="featured">
-  <div class="container">
+  <div id="featured" class="container">
     <div class="row featured-col">
       <!-- <div class="featured-col"> -->
       <div class="featured-text">
@@ -78,7 +78,7 @@
     <div class="row">
       <div class="section-title col-space">
          <h4>Popular</h4>
-          <a class="btn-more" id="">View Popular</a>
+          <a class="btn-more" id="search-popular">View Popular</a>
     </div>
     <div  class="content-col">
       <div id="popular" class="row-items">
@@ -157,7 +157,7 @@
             <span data-filter="*" class="active" id="browseAll">All</span>
             <span data-filter=".filter-gin" id="browseGin">Gin</span>
             <span data-filter=".filter-vodka" id="browseVodka">Vodka</span>
-            <span data-filter=".filter-tequila" id="browseTequila">Tequila</span>
+            <span data-filter=".filter-tequila" id="browseBrandy">Brandy</span>
         </div>
     </div>
 
@@ -280,7 +280,7 @@
       <div class="row">
         <div class="content-col section-title col-space">
            <h4>My favourites</h4>
-            <a href="#" class="btn-more" id="favouriteATag">View More</a>
+            <a href="#popular" class="btn-more" id="favouriteATag">View More</a>
       </div>
       <div class="content-col">
         <div id="favourite" class="row-items">

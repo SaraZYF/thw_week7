@@ -93,17 +93,30 @@ async function searchPageLoad(){
   query = query.split('=')[2];
   if(window.location.search.split('=')[1].includes('cocktail')){
     searchParam = 'search.php?s=';
+    $('#result-query').text(`Search results for... ${query}`);
   }else if (window.location.search.split('=')[1].includes('Ingredient')) {
-    searchParam = 'filter.php?i='
+    searchParam = 'filter.php?i=';
+    $('#result-query').text(`Search results for... ${query}`);
+  }else if (window.location.search.split('=')[1].includes('popular')) {
+    searchParam = 'popular.php';
+    $('#result-query').text(`Search results for... Popular`);
   }
+
+
   await cocktailRequest(query, searchParam)
   .then((result) => {
     let ret = result.drinks;
+    console.log(ret);
+    if(ret == 'None Found'){
+      $('#search-amount').text(`No results found`)
+    }else{
+      $('#search-amount').text(`${ret.length} results found`)
+    }
     ret.forEach((element) => {
         $('#results').append(cocktailCard(element.idDrink, element.strDrink, element.strDrinkThumb))
     });
-
   })
+
 }
 
 async function productPageLoad(){
@@ -193,7 +206,6 @@ function addFav(id,name,img){
     }
     localStorage.setItem('FavouriteDrinks', JSON.stringify(favData));
     favouriteCocktail();
-
 }
 
 //mapping data from a random drink to featured card
@@ -221,8 +233,9 @@ async function favouriteCocktail(){
         )
     }else{
         $('#favourite').html('');
-        $('#favouriteATag').text("view more")
+        $('#favouriteATag').text("browse more")
         //decide whether we display only 4 objects or as many as the users adds
+        let count = 0;
         favData.forEach(element => {
             $('#favourite').append(
                 `
@@ -282,11 +295,30 @@ favouriteCocktail();
 popularDrinks(4);
 //loading objects into browse section
 browseDrinks(8);
+
+weatherRequest();
 }
 
-
+var extended = false;
 $('#popularView').click(() =>{
+  if(!extended){
     popularDrinks(8);
+    $('#popularView').text('display less');
+  }else {
+    popularDrinks(4);
+    $('#popularView').text('display more');
+  }
+  extended = !extended;
+})
+
+$('#search-popular').click(() =>{
+  redirect('./recipes.html?option=popular?search=')
+})
+
+$('.filter').children().click((e) => {
+  $('.filter').children().removeClass('active');
+  $(`#${e.target.id}`).addClass('active');
+
 })
 
 $('#productFav').click(async (e) => {
@@ -311,7 +343,7 @@ $('#productFav').click(async (e) => {
 //globally listening for an enter keypress and loading search results into console
 window.addEventListener('keypress', (e) => {
     if(e.key == "Enter"){
-        window.location.href = `./recipes.html?option=${$('.search-select').val()}?search=${e.target.value}`;
+        redirect(`./recipes.html?option=${$('.search-select').val()}?search=${e.target.value}`);
 
     }
 })
@@ -361,23 +393,16 @@ async function browseVodka (index) {
     await cocktailRequest('','filter.php?i=vodka')
     .then (result => {
         var browseData = result.drinks;
-
-        console.log(browseData);
         for (let i=0; i < index; i++){
-
     $('#browse').append( cocktailCard(browseData[i].idDrink, browseData[i].strDrink, browseData[i].strDrinkThumb))
     }
 })
 }
 
-
-
 // click VODKA load objects to browse section
 $('#browseVodka').click(() => {
    browseVodka(8);
 })
-
-
 
 // append detail for Brandy on browse card, limit to 8
 async function browseBrandy (index) {
@@ -386,15 +411,66 @@ async function browseBrandy (index) {
     .then (result => {
         var browseData = result.drinks;
         for (let i=0; i < index; i++){
-
     $('#browse').append( cocktailCard(browseData[i].idDrink, browseData[i].strDrink, browseData[i].strDrinkThumb))
     }
 })
 }
 
-
-
 // click Brandy load objects to browse section
 $('#browseBrandy').click(() => {
    browseBrandy(8);
 })
+
+// //location, Melbourne, Weather of the day, openweather API
+async function weatherRequest(){
+    $('#featured').html('');
+    await locationRequest('melbourne, au')
+    .then(result => {
+        var daily = result.main.feels_like;
+        var weather = $('#weather-condition');
+        if(daily > 25) {
+          browseMint();
+        }else{
+          browseCinnamon();
+        }
+      })
+    }
+
+const featureCard = (id, name, img, weather)  =>{
+    return(
+      `
+      <div class="row featured-col">
+            <div class="featured-text">
+            <h3 id="weather">The weather outside is <span id="weather-condition">${weather}</span>, can we suggest a...</h3>
+            <div class="featured-name">${name}</div>
+            <p>Who doesn't love a Margarita, right? Hailing from Mexico, this refreshing, Tequila-based cocktail has long been a darling of the global bar scene.</p>
+            <a class="btn" href="#">Read more</a>
+              </div>
+              <div class="featured-image-col">
+                  <img class="featured-img" onclick='productPageRequest(${id})'>
+                  <img src="${img}" alt="">
+              </div>
+          </div>
+    `
+  )
+}
+
+//function search mintCoctail, return 1 result
+async function browseMint (index) {
+    $('#featured').html('');
+    await cocktailRequest('','filter.php?i=mint')
+    .then (result => {
+        var browseData = result.drinks;
+    $('#featured').append( featureCard(browseData[0].idDrink, browseData[0].strDrink, browseData[0].strDrinkThumb, 'warm'))
+})
+}
+
+//function search cinnamonCoctail, return 1 result
+async function browseCinnamon() {
+    $('#featured').html('');
+    await cocktailRequest('','filter.php?i=cinnamon')
+    .then (result => {
+        var browseData = result.drinks;
+    $('#featured').append( featureCard(browseData[0].idDrink, browseData[0].strDrink, browseData[0].strDrinkThumb, 'cold'))
+})
+}
