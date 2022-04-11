@@ -5,6 +5,7 @@ const locationApi = {
     key: 'f40fdbed4ce6f49a21c55972b85d4f67',
     uri: 'https://api.openweathermap.org/data/2.5/'
 };
+const search = $('#search');
 //array of popular cocktails for search autocomplete
 var autoCocktails = ['Martini', 'Old Fashioned', 'Margarita', 'Cosmopolitan', 'Negroni', 'Moscow Mule', 'Martini', 'Mojito', 'Whiskey Sour', 'French 75',
     'Manhattan', 'Spritz', 'Gimlet', 'Sazerac' ,"Pimm's Cup", 'Vesper', 'Mimosa', 'Tom Collins', 'Daiquiri', 'Dark & Stormy', 'Martinez',];
@@ -14,17 +15,7 @@ var drinkRecipe = {
     name: "",
     img: "",
 }
-
-//favourite drinks is an array of objects
-//TODO add function that add's and removes objects on user input
-var favouriteDrink =
-[
-
-]
-
-//TODO function that adds user's selected drink to favourites
-var favouriteDrinks = [];
-
+//reusable template of the drink card
 const cocktailCard = (id, name, img) =>{
     return(
         `
@@ -52,8 +43,6 @@ const cocktailCard = (id, name, img) =>{
     )
 }
 
-const search = $('#search');
-
 //for saving and retrieving localstorage data
 function localStorageFavourites(){
     //localStorage.setItem('FavouriteDrinks', JSON.stringify(favouriteDrink));
@@ -71,18 +60,6 @@ async function cocktailRequest(query, param){
         return data;
 }
 
-$("#popularDisplay").on("click", function() {
-    $('#popularDisplay').text('Display Less')
-    $('#popularDisplay').toggleClass('btn-see-more')
-    $('#popularDisplay').toggleClass('btn-see-less')
-    if ($("#popularDisplay").hasClass("btn-see-more")) {
-        $(".popular-col").css("max-height", "calc(50% - 30px)");
-        $('#popularDisplay').text('Display More')
-    } else $(".popular-col").css("max-height", "100%");
-
-});
-
-
 //location is the desired location of weather
 async function locationRequest(location){
     let data;
@@ -93,10 +70,119 @@ async function locationRequest(location){
         return data;
 }
 
+//change window url
 function redirect(location){
     window.location.href = location;
 }
 
+//push data to window location to pass data along
+async function productPageRequest(id){
+    redirect(`product.html?id=${id}`)
+}
+
+//removing favourited cocktails
+function removeFav(index){
+    let favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
+    let newFavData = [];
+    favData.forEach(element =>{
+        if(element.id != index){
+            newFavData.push(element);
+        }
+    })
+    localStorage.setItem('FavouriteDrinks', JSON.stringify(newFavData));
+    favouriteCocktail();
+}
+
+//adding favourited cocktails if it doesn't already exist
+function addFav(id,name,img){
+    console.log(id + '\n' + name + '\n' + img);
+    let favData =[];
+    if(JSON.parse(localStorage.getItem('FavouriteDrinks')) == null){
+        favData = [{id: id, name: name,img: img}]
+    }else{
+        favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
+        if(!favData.filter(element => element.id == id).length > 0){
+          favData.push({id: id, name: name,img: img});
+        }
+    }
+    localStorage.setItem('FavouriteDrinks', JSON.stringify(favData));
+    favouriteCocktail();
+}
+
+//mapping data from a random drink to featured card
+async function favouriteCocktail(){
+    var favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
+    if(favData == null){
+        $('#favouriteATag').text("add a recipe")
+    }else{
+        $('#favourite').html('');
+        $('#favouriteATag').text("browse more")
+        //decide whether we display only 4 objects or as many as the users adds
+        let count = 0;
+        favData.forEach(element => {
+            $('#favourite').append(
+                `
+                    <div class="item-col">
+                        <div class="item-content">
+                            <div class="item-img" onclick='productPageRequest(${element.id})'>
+                            <div class="content-overlay"></div>
+                                <img src="${element.img}" alt="${element.name}">
+                                <div class="content-details fadeIn-bottom">
+                                    <p class="content-text">View ${element.name}</p>
+                                </div>
+                            </div>
+
+                            <div class="item-content-text">
+                            <div class="item-content-title">
+                                <h5>${element.name}</h5>
+                            </div
+                            <div class="item-content-favourite">
+                                <a class="btn-remove-favourite" onclick='removeFav(${element.id})'></a>
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
+                `
+                )
+        })
+    }
+}
+
+//mapping popular drinks to the home page, the index is the number of items you want returned
+async function popularDrinks(index){
+    $('#popular').html('');
+    await cocktailRequest('', 'popular.php')
+    .then(result => {
+        var popData = result.drinks;
+        for(let i = 0; i < index; i++){
+            $('#popular').append(cocktailCard(popData[i].idDrink , popData[i].strDrink, popData[i].strDrinkThumb))
+        }
+    })
+}
+
+//search autocomplete, which is working. however, there is a css object the is blocking the display.
+search.autocomplete({
+    source: autoCocktails
+});
+
+//on load funcations calls
+
+//main onload call
+function homePageLoad() {
+// currently saving the favourite drinks object into localstorage, just for display purposes
+localStorageFavourites();
+//loading objects into the favourites section
+favouriteCocktail();
+//loading objects into the popular section
+popularDrinks(8);
+//loading objects into browse section
+browseDrinks(8);
+
+weatherRequest();
+}
+
+//search onload call
 async function searchPageLoad(){
   favouriteCocktail();
   let query = window.location.search;
@@ -112,24 +198,22 @@ async function searchPageLoad(){
     searchParam = 'popular.php';
     $('#result-query').text(`Search results for... Popular`);
   }
-
-
   await cocktailRequest(query, searchParam)
-  .then((result) => {
-    let ret = result.drinks;
-    console.log(ret);
-    if(ret == 'None Found'){
-      $('#search-amount').text(`No results found`)
-    }else{
-      $('#search-amount').text(`${ret.length} results found`)
-    }
-    ret.forEach((element) => {
-        $('#results').append(cocktailCard(element.idDrink, element.strDrink, element.strDrinkThumb))
-    });
-  })
-
+    .then((result) => {
+      let ret = result.drinks;
+      console.log(ret);
+      if(ret == 'None Found'){
+        $('#search-amount').text(`No results found`)
+      }else{
+        $('#search-amount').text(`${ret.length} results found`)
+      }
+      ret.forEach((element) => {
+          $('#results').append(cocktailCard(element.idDrink, element.strDrink, element.strDrinkThumb))
+      });
+    })
 }
 
+//recipe onload call
 async function productPageLoad(){
     favouriteCocktail();
     let id = window.location.search;
@@ -185,125 +269,35 @@ async function productPageLoad(){
       $('#productFav').text('remove from favourites');
       $('#productFav').css({'background': "tomato"});
     }
-
 }
 
-async function productPageRequest(id){
-    redirect(`product.html?id=${id}`)
-}
-
-function removeFav(index){
-    let favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
-    let newFavData = [];
-    favData.forEach(element =>{
-        if(element.id != index){
-            newFavData.push(element);
-        }
-    })
-    localStorage.setItem('FavouriteDrinks', JSON.stringify(newFavData));
-    favouriteCocktail();
-}
-
-function addFav(id,name,img){
-    console.log(id + '\n' + name + '\n' + img);
-    let favData =[];
-    if(JSON.parse(localStorage.getItem('FavouriteDrinks')) == null){
-        favData = [{id: id, name: name,img: img}]
-    }else{
-        favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
-        if(!favData.filter(element => element.id == id).length > 0){
-          favData.push({id: id, name: name,img: img});
-        }
-    }
-    localStorage.setItem('FavouriteDrinks', JSON.stringify(favData));
-    favouriteCocktail();
-}
-
-//mapping data from a random drink to featured card
-async function favouriteCocktail(){
-    var favData = JSON.parse(localStorage.getItem('FavouriteDrinks'));
-    if(favData == null){
-        $('#favouriteATag').text("add a recipe")
-        //TODO change the placeholder image to a plus image
-
-    }else{
-        $('#favourite').html('');
-        $('#favouriteATag').text("browse more")
-        //decide whether we display only 4 objects or as many as the users adds
-        let count = 0;
-        favData.forEach(element => {
-            $('#favourite').append(
-                `
-                    <div class="item-col">
-                        <div class="item-content">
-                            <div class="item-img" onclick='productPageRequest(${element.id})'>
-                            <div class="content-overlay"></div>
-                                <img src="${element.img}" alt="${element.name}">
-                                <div class="content-details fadeIn-bottom">
-                                    <p class="content-text">View ${element.name}</p>
-                                </div>
-                            </div>
-
-                            <div class="item-content-text">
-                            <div class="item-content-title">
-                                <h5>${element.name}</h5>
-                            </div
-                            <div class="item-content-favourite">
-                                <a class="btn-remove-favourite" onclick='removeFav(${element.id})'></a>
-                            </div>
-                        </div>
-
-                        </div>
-                    </div>
-                `
-                )
-        })
-    }
-}
-
-//mapping popular drinks to the home page, the index is the number of items you want returned
-async function popularDrinks(index){
-    $('#popular').html('');
-    await cocktailRequest('', 'popular.php')
-    .then(result => {
-        var popData = result.drinks;
-        for(let i = 0; i < index; i++){
-            $('#popular').append(cocktailCard(popData[i].idDrink , popData[i].strDrink, popData[i].strDrinkThumb))
-        }
-
-    })
-
-}
-
-//on load funcations calls
-
-//search autocomplete, which is working. however, there is a css object the is blocking the display.
-search.autocomplete({
-    source: autoCocktails
-});
-function homePageLoad() {
-// currently saving the favourite drinks object into localstorage, just for display purposes
-localStorageFavourites();
-//loading objects into the favourites section
-favouriteCocktail();
-//loading objects into the popular section
-popularDrinks(8);
-//loading objects into browse section
-browseDrinks(8);
-
-weatherRequest();
-}
-
+//onclick events
 $('#search-popular').click(() =>{
   redirect('./recipes.html?option=popular?search=')
 })
 
+//so that there is only one active button on the browse card
 $('.filter').children().click((e) => {
   $('.filter').children().removeClass('active');
   $(`#${e.target.id}`).addClass('active');
 
 })
 
+$('#browseAll').click(() => {
+   browseDrinks(8);
+})
+
+// click VODKA load objects to browse section
+$('#browseVodka').click(() => {
+   browseVodka(8);
+})
+
+// click GIN load objects to browse section
+$('#browseGin').click(() => {
+   browseGin(8);
+})
+
+// //click ALL load objects to browse section
 $('#productFav').click(async (e) => {
   let id = window.location.search;
   id = id.split('=')[1];
@@ -320,6 +314,18 @@ $('#productFav').click(async (e) => {
 
   })
 })
+
+//change the popular drinks section to show more than 4 items
+$("#popularDisplay").on("click", function() {
+    $('#popularDisplay').text('Display Less')
+    $('#popularDisplay').toggleClass('btn-see-more')
+    $('#popularDisplay').toggleClass('btn-see-less')
+    if ($("#popularDisplay").hasClass("btn-see-more")) {
+        $(".popular-col").css("max-height", "calc(50% - 30px)");
+        $('#popularDisplay').text('Display More')
+    } else $(".popular-col").css("max-height", "100%");
+
+});
 
 //eventlisteners
 
@@ -343,12 +349,6 @@ async function browseDrinks (index) {
 })
 }
 
-// //click ALL load objects to browse section
-$('#browseAll').click(() => {
-   browseDrinks(8);
-})
-
-
 // append detail for GIN on browse card, limit to 8
 async function browseGin (index) {
     $('#browse').html('');
@@ -363,13 +363,6 @@ async function browseGin (index) {
 })
 }
 
-
-
-// click GIN load objects to browse section
-$('#browseGin').click(() => {
-   browseGin(8);
-})
-
 // append detail for VODKA on browse card, limit to 8
 async function browseVodka (index) {
     $('#browse').html('');
@@ -381,11 +374,6 @@ async function browseVodka (index) {
     }
 })
 }
-
-// click VODKA load objects to browse section
-$('#browseVodka').click(() => {
-   browseVodka(8);
-})
 
 // append detail for Brandy on browse card, limit to 8
 async function browseBrandy (index) {
