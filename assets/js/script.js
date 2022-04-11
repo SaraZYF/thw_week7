@@ -325,18 +325,22 @@ async function weatherRequest(){
 const featureCard = (id, name, img, weather)  =>{
     return(
       `
-      <div class="row featured-col">
-            <div class="featured-text">
+ 
+  <div id="featured" class="container">
+    <div class="row featured-col">
+      <div class="featured-text">
             <h3 id="weather">The weather outside is <span id="weather-condition">${weather}</span>, can we suggest a...</h3>
             <div class="featured-name">${name}</div>
             <p>Who doesn't love a Margarita, right? Hailing from Mexico, this refreshing, Tequila-based cocktail has long been a darling of the global bar scene.</p>
-            <a class="btn" href="#">Read more</a>
-              </div>
-              <div class="featured-image-col">
-                  <img class="featured-img" onclick='productPageRequest(${id})'>
-                  <img src="${img}" alt="">
-              </div>
-          </div>
+            <a class="btn" onclick='productPageRequest(${id})'>Read more</a>
+      </div>
+      <div class="featured-image-col">
+            <img class="featured-img" onclick='productPageRequest(${id})'>
+            <img src="${img}" alt="">
+      </div>
+    </div>
+  </div>
+
     `
   )
 }
