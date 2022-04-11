@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CocktailSearch</title>
+    <title>Shaken&Stirred | Cocktail Recipe Finder</title>
     <link rel="stylesheet" href="assets/css/reset.css" />
     <link rel="stylesheet" href="./assets/css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,31 +91,38 @@
 </section>
 
 
-  <section class="browse dark-bg">
-    <div class="container">
-      <div class="row browse-col">
-        <div class="section-title">
-            <h3>Feeling adventurous, why not have a browse and try something new.</h3>
-            <p>Nulla metus metus ullamcorper vel tincidunt sed euismod nibh Quisque volutpat condimentum velit class aptent.</p>
+<section class="browse dark-bg">
+  <div class="container">
+    <div class="row browse-col">
+      <div class="section-title">
+        <h3>Feeling adventurous, why not have a browse and try something new.</h3>
       </div>
       <div class="browse-filter">
-         <div class="filter">
-            <span data-filter="*" class="active" id="browseAll">All</span>
-            <span data-filter=".filter-gin" id="browseGin">Gin</span>
-            <span data-filter=".filter-vodka" id="browseVodka">Vodka</span>
-            <span data-filter=".filter-tequila" id="browseBrandy">Brandy</span>
+        <div class="filter">
+          <span id="browseAll" class="active">All</span>
+          <span id="browseGin">Gin</span>
+          <span id="browseVodka">Vodka</span>
+          <span id="browseTequila">Tequila</span>
         </div>
-    </div>
-
-      <div class="content-col">
-        <div id="browse" class="row-items">
+      </div>
+        <div class="content-col">
+          <div id="browse-all-col">
+            <div id="browse-all" class="row-items"></div>
           </div>
-         </div>
-         </div>
-
+          <div id="browse-gin-col">
+            <div id="browse-gin" class="row-items"></div>
+          </div>
+          <div id="browse-vodka-col">
+            <div id="browse-vodka" class="row-items"></div>
+          </div>
+          <div id="browse-tequila-col">
+            <div id="browse-tequila" class="row-items"></div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
 
   <section class="favourites">
